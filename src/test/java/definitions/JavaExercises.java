@@ -3,8 +3,15 @@ package definitions;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 
-import java.awt.*;
+import java.util.*;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static support.TestContext.getDriver;
 
 public class JavaExercises {
     @Given("I input {string}")
@@ -169,6 +176,216 @@ public class JavaExercises {
 
     @Given("I work with a dynamic array")
     public void iWorkWithADynamicArray() {
-        List<String> da = List.of("pasta", "bread", "milk", "pork", "potato", "cookies");
+        List<String> arrList = Arrays.asList("pasta", "bread", "milk", "pork", "potato", "cookies");
+        List<String> da = List.of("plums", "pears", "kiwi", "melon");
+        List<Character> chList = List.of('u','p','d','a','t','e');
+        List<String> oceans = new ArrayList<>();
+        //List<String> list = List.of("plum", "apple", "kiwi"");
+        System.out.println(arrList.size());
+        for (String element : arrList) {
+            System.out.println(element);
+        }
+        for (String element1 : da) {
+            System.out.println(element1);
+        }
+        for (Character element2 : chList) {
+            System.out.print(element2);
+        }
+        oceans.add("Atlantic");
+        oceans.add("Pacific");
+        oceans.add("Indian");//da.remove("melon");
+        for (String element3 : oceans) {
+            System.out.println(element3);
+        }
+    }
+
+
+
+    @Given("I return true or false if {int} divisible by three or five")
+    public void iReturnTrueOrFalseIfDivisibleByThreeOrFive(int myNum) {
+        boolean evenFive = false;
+        //boolean oddThree;
+        int evenOdd = myNum%2;
+        int three = myNum%3;
+        int five = myNum%5;
+        if (evenOdd == 0 && five == 0) {
+               evenFive = true;
+            }
+        else if (evenOdd != 0 && three == 0) {
+                evenFive = true;
+            }
+        System.out.println(evenFive);
+        }
+
+    @Given("market prices")
+    public void marketPrices() {
+    int[] price = {2, 10, 7, 1, 6, 4, 3, 1, 5, 7, 9, 5};
+    int profit = 0;
+    int daysInTheMarket = price.length;
+    for (int tDay = 0; tDay < daysInTheMarket; tDay++) {
+        int buyPrice = price[tDay];
+        for (int nTD = tDay; nTD < daysInTheMarket; nTD++) {
+            int sellPrice = price[nTD];
+            if ((sellPrice - buyPrice) > profit) {
+                profit = sellPrice - buyPrice;
+            }
+        }
+
+    }
+    System.out.println(profit);
+    }
+
+    @Given("I swap name {string} and lastname {string}")
+    public void iSwapNameAndLastname(String name, String surname) {
+        Map <String, String> myTestMap = new LinkedHashMap();
+        myTestMap.put("name", name);
+        myTestMap.put("surname", surname);
+        System.out.println(myTestMap);
+        String mySwap = myTestMap.get("name");
+        myTestMap.put("name", surname);
+        myTestMap.put("surname", mySwap);
+        System.out.println(myTestMap);
+
+    }
+
+    @Given("I go to {string} page")
+    public void iGoToPage(String url) {
+        if (url.equals("quote")) {
+            url = "https://skryabin.com/market/quote.html";
+        }
+        else if (url.equals("yahoo")) {
+            url = "https://www.yahoo.ru/";
+        }
+        else {
+            System.out.println("No implementation for " + url);
+        }
+        getDriver().get(url);
+    }
+
+
+    @And("I print page details")
+    public void iPrintPageDetails() {
+        System.out.println(getDriver().getTitle());
+        System.out.println(getDriver().getWindowHandle());
+        System.out.println(getDriver().getPageSource());
+    }
+
+    @And("I go to previous page")
+    public void iGoToPreviousPage() {
+        getDriver().navigate().back();
+    }
+
+    @And("I go to next page")
+    public void iGoToNextPage() {
+        getDriver().navigate().forward();
+    }
+
+    @And("I navigate to {string} page")
+    public void iNavigateToPage(String url) {
+        if (url.equals("google")) {
+            url = "https://www.google.com/";
+        }
+        else {System.out.println("No implementation for " + url);}
+        getDriver().navigate().to(url);
+    }
+
+    @And("I change screen resolution to {string}")
+    public void iChangeScreenResolutionTo(String resolution) throws InterruptedException {
+        if (resolution.equals("phone")) {
+            getDriver().manage().window().setSize(new Dimension(400, 768));
+            Thread.sleep(1500);
+        }
+        else if (resolution.equals("tablet")) {
+            getDriver().manage().window().setSize(new Dimension(800, 600));
+            Thread.sleep(1500);
+        }
+        else if (resolution.equals("desktop")) {
+            getDriver().manage().window().setSize(new Dimension(1024, 768));
+            Thread.sleep(1500);
+        }
+        else {
+            System.err.println("No such size. Screen was maximized");
+            getDriver().manage().window().maximize();
+            Thread.sleep(1500);
+        }
+    }
+
+    @When("I print {string} into {string} input field")
+    public void iPrintIntoInputField(String input, String field) {
+        switch (field) {
+            case "firstName" -> field = "//input[@id='firstName']";
+            case "lastName" -> field = "//input[@id='lastName']";
+            case "userName" -> field = "//input[@name='username']"; ////span[@class='ui-button-text'][text()='Save']
+            case "email" -> field = "//input[@name='email']";
+            case "password" -> field = "//input[@id='password']";
+            case "confirmPassword" -> field = "//input[@id='confirmPassword']";
+            default -> System.out.println("No such input field " + field);
+        }
+        getDriver().findElement(By.xpath(field)).sendKeys(input);
+    }
+
+    @And("I submit the page")
+    public void iSubmitThePage() {
+        getDriver().findElement(By.xpath("//button[@id='formSubmit']")).click();
+    }
+
+    @And("I clear {string} input field")
+    public void iClearInputField(String field) {
+        switch (field) {
+            case "firstName" -> field = "//input[@id='firstName']";
+            case "lastName" -> field = "//input[@id='lastName']";
+            case "userName" -> field = "//input[@name='username']"; ////span[@class='ui-button-text'][text()='Save']
+            case "email" -> field = "//input[@name='email']";
+            case "password" -> field = "//input[@id='password']";
+            case "confirmPassword" -> field = "//input[@id='confirmPassword']";
+            default -> System.err.println("No such input field " + field);
+        }
+        getDriver().findElement(By.xpath(field)).clear();
+    }
+
+    @And("I delete {int} -th character from {string} input field")
+    public void iDeleteThCharacterFromInputField(int character, String field) {
+        switch (field) {
+            case "firstName" -> field = "//input[@id='firstName']";
+            case "lastName" -> field = "//input[@id='lastName']";
+            case "userName" -> field = "//input[@name='username']";
+            case "email" -> field = "//input[@name='email']";
+            case "password" -> field = "//input[@id='password']";
+            case "confirmPassword" -> field = "//input[@id='confirmPassword']";
+            default -> System.err.println("No such input field " + field);
+        }
+        String email = getDriver().findElement(By.xpath(field)).getText();
+        //field contains no text yet. Step can not be completed.
+        System.out.println("\nemail : " + email);
+    }
+
+    @Then("I verify that page title is {string}")
+    public void iVerifyThatPageTitleIs(String expectedTitle) {
+        String actualTitle = getDriver().getTitle();
+        assertThat(actualTitle).isEqualTo(expectedTitle);
+    }
+
+
+    @And("I verify that {string} field contains text {string}")
+    public void iVerifyThatFieldContainsText(String field, String value) {
+        switch (field) {
+            case "name" -> field = "//b[@name='name']";
+            case "username" -> field = "/b[@name='username']";
+            case "email" -> field = "//b[@name='email']";
+            case "password" -> field = "//b[@name='password']";
+            case "agreedToPrivacyPolicy" -> field = "//b[@name='agreedToPrivacyPolicy']";
+            default ->  System.err.println("\nNo such field implemented: " + field);
+            }
+            String actualValue = getDriver().findElement(By.xpath(field)).getText();
+            if (field.equals("//b[@name='password']")) {
+                value = "[entered]";
+            }
+            assertThat(actualValue).isEqualTo(value);
+        }
+
+
+    @And("I verify that Return Button is visible")
+    public void iVerifyThatReturnButtonIsVisible() {
+        getDriver().findElement(By.xpath("//button[@id='return']")).isDisplayed();
     }
 }
