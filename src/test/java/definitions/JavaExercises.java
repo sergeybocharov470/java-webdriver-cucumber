@@ -374,18 +374,33 @@ public class JavaExercises {
             case "email" -> field = "//b[@name='email']";
             case "password" -> field = "//b[@name='password']";
             case "agreedToPrivacyPolicy" -> field = "//b[@name='agreedToPrivacyPolicy']";
+            case "thirdParty" -> field = "//span[@id='thirdPartyResponseMessage']";
             default ->  System.err.println("\nNo such field implemented: " + field);
             }
             String actualValue = getDriver().findElement(By.xpath(field)).getText();
             if (field.equals("//b[@name='password']")) {
                 value = "[entered]";
             }
-            assertThat(actualValue).isEqualTo(value);
+            assertThat(actualValue).contains(value);
         }
 
 
     @And("I verify that Return Button is visible")
     public void iVerifyThatReturnButtonIsVisible() {
         getDriver().findElement(By.xpath("//button[@id='return']")).isDisplayed();
+    }
+
+    @Given("I accept an alert")
+    public void iAcceptAnAlert() {
+        System.out.println(getDriver().switchTo().alert().getText());
+        getDriver().switchTo().alert().accept();
+
+    }
+
+    @Given("I dismiss an alert")
+    public void iDismissAnAlert() {
+        System.out.println(getDriver().switchTo().alert().getText());
+        getDriver().switchTo().alert().dismiss();
+
     }
 }

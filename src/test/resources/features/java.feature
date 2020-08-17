@@ -126,5 +126,12 @@
       And I print "jdoe@example.org" into "email" input field
       And I wait for 2 sec
 
+@day6
+  Scenario: alert handling
+    Given I go to "quote" page
+    When I click on element with xpath "//button[@id='thirdPartyButton']"
+    Then I accept an alert
+    And I verify that "thirdParty" field contains text "You accepted"
+
 
 
