@@ -54,9 +54,11 @@
     Scenario: odd and even divisible by 5 and 3
       Given I return true or false if 54 divisible by three or five
 
+
 @team1
     Scenario: stock market
       Given market prices
+
 
 @day6
     Scenario: swap names
@@ -133,5 +135,26 @@
     Then I accept an alert
     And I verify that "thirdParty" field contains text "You accepted"
 
+@team1
+  Scenario: removeall vowels
+    Given I remove wovels from text
+
+@Day7
+  Scenario: swap array elements
+    Given I swap an array elements 3 and 5
+
+
+@Day7
+  Scenario: divisible by
+    Given I input integer 36 and check if it is devisible
+
+
+@Day8
+  Scenario: all positive integers
+    Given I print all positive integers
+
+@Day8
+  Scenario: min and max integers
+    Given I print all integers
 
 

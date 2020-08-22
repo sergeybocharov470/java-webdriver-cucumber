@@ -10,6 +10,7 @@ import org.openqa.selenium.Dimension;
 import java.util.*;
 import java.util.List;
 
+import static java.lang.Integer.MAX_VALUE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static support.TestContext.getDriver;
 
@@ -46,7 +47,7 @@ public class JavaExercises {
         } else {
             a = false;
         }
-        String b=String.valueOf(a);
+        String b = String.valueOf(a);
         System.out.println(b);
 
 
@@ -85,31 +86,31 @@ public class JavaExercises {
                 m = m1;
             }
         }
-        System.out.println("Max value is "+m);
+        System.out.println("Max value is " + m);
     }
 
     @Given("I perform actions with {string} and {string}")
     public void iPerformActionsWithAnd(String var1, String var2) {
-        String t="";
-        String tu="";
-        String tv="";
-        String var1u=var1.toUpperCase();
-        String var2u=var2.toUpperCase();
-        if(!var1.equals(var2)) {
-            t="not ";
+        String t = "";
+        String tu = "";
+        String tv = "";
+        String var1u = var1.toUpperCase();
+        String var2u = var2.toUpperCase();
+        if (!var1.equals(var2)) {
+            t = "not ";
         }
-        if(!var1u.equals(var2u)) {
-            tu="not ";
+        if (!var1u.equals(var2u)) {
+            tu = "not ";
         }
-        if(!var1.contains(var2)) {
-            tv="not ";
+        if (!var1.contains(var2)) {
+            tv = "not ";
         }
-        System.out.println("Values of variables as they are: "+var1+", "+var2);
-        System.out.println("Uppercased values of variables: "+var1.toUpperCase()+", "+var2.toUpperCase());
-        System.out.println("Lengths of \""+var1+"\" and \""+var2+"\" are "+var1.length()+" and "+var2.length()+" respectively");
-        System.out.println("Value of variable1: \""+var1+"\" is "+t+"equal to value of variable2: \""+var2+"\"");
-        System.out.println("Value of uppercased variable1: \""+var1u+"\" is "+tu+"equal to value of uppercased variable2: \""+var2u+"\"");
-        System.out.println("Value of variable1: \""+var1+"\" " +tv+"contains the value of variable2: \""+var2+"\"");
+        System.out.println("Values of variables as they are: " + var1 + ", " + var2);
+        System.out.println("Uppercased values of variables: " + var1.toUpperCase() + ", " + var2.toUpperCase());
+        System.out.println("Lengths of \"" + var1 + "\" and \"" + var2 + "\" are " + var1.length() + " and " + var2.length() + " respectively");
+        System.out.println("Value of variable1: \"" + var1 + "\" is " + t + "equal to value of variable2: \"" + var2 + "\"");
+        System.out.println("Value of uppercased variable1: \"" + var1u + "\" is " + tu + "equal to value of uppercased variable2: \"" + var2u + "\"");
+        System.out.println("Value of variable1: \"" + var1 + "\" " + tv + "contains the value of variable2: \"" + var2 + "\"");
     }
 
     @Given("I have two integer variables {int} and {int} for calculations")
@@ -130,24 +131,20 @@ public class JavaExercises {
     public void iJumpToStartPage(String url) {
         if (url.toLowerCase().equals("yahoo")) {
             System.out.println("https://www.yahoo.com");
-        }
-        else if (url.toLowerCase().equals("google")) {
+        } else if (url.toLowerCase().equals("google")) {
             System.out.println("https://www.google.com");
-        }
-        else if (url.toLowerCase().equals("yandex")) {
+        } else if (url.toLowerCase().equals("yandex")) {
             System.out.println("https://www.yandex.com");
-        }
-        else {
+        } else {
             System.out.println("https://www.something.net");
         }
     }
 
     @Given("I print if number {int} positive or negative")
     public void iPrintIfNumberNumberPositiveOrNegative(int number) {
-        if (number >=0) {
+        if (number >= 0) {
             System.out.println("Given number " + number + " is positive");
-        }
-        else {
+        } else {
             System.out.println("Given number " + number + " is negative");
         }
     }
@@ -160,8 +157,9 @@ public class JavaExercises {
             case 3 -> System.out.println("Wednesday");
             case 4 -> System.out.println("Thursday");
             case 5 -> System.out.println("Friday");
-            case 6 -> System.out.println("Tuesday");
-            default -> System.out.println("Sunday");
+            case 6 -> System.out.println("Saturday");
+            case 7 -> System.out.println("Tuesday");
+            default -> System.out.println("No such a week day!");
         }
     }
 
@@ -178,7 +176,7 @@ public class JavaExercises {
     public void iWorkWithADynamicArray() {
         List<String> arrList = Arrays.asList("pasta", "bread", "milk", "pork", "potato", "cookies");
         List<String> da = List.of("plums", "pears", "kiwi", "melon");
-        List<Character> chList = List.of('u','p','d','a','t','e');
+        List<Character> chList = List.of('u', 'p', 'd', 'a', 't', 'e');
         List<String> oceans = new ArrayList<>();
         //List<String> list = List.of("plum", "apple", "kiwi"");
         System.out.println(arrList.size());
@@ -200,51 +198,52 @@ public class JavaExercises {
     }
 
 
-
     @Given("I return true or false if {int} divisible by three or five")
     public void iReturnTrueOrFalseIfDivisibleByThreeOrFive(int myNum) {
         boolean evenFive = false;
         //boolean oddThree;
-        int evenOdd = myNum%2;
-        int three = myNum%3;
-        int five = myNum%5;
+        int evenOdd = myNum % 2;
+        int three = myNum % 3;
+        int five = myNum % 5;
         if (evenOdd == 0 && five == 0) {
-               evenFive = true;
-            }
-        else if (evenOdd != 0 && three == 0) {
-                evenFive = true;
-            }
-        System.out.println(evenFive);
+            evenFive = true;
+        } else if (evenOdd != 0 && three == 0) {
+            evenFive = true;
         }
+        System.out.println(evenFive);
+    }
+
 
     @Given("market prices")
     public void marketPrices() {
-    int[] price = {2, 10, 7, 1, 6, 4, 3, 1, 5, 7, 9, 5};
-    int profit = 0;
-    int daysInTheMarket = price.length;
-    for (int tDay = 0; tDay < daysInTheMarket; tDay++) {
-        int buyPrice = price[tDay];
-        for (int nTD = tDay; nTD < daysInTheMarket; nTD++) {
-            int sellPrice = price[nTD];
-            if ((sellPrice - buyPrice) > profit) {
-                profit = sellPrice - buyPrice;
+        int[] price = {2, 10, 7, 1, 6, 4, 3, 1, 5, 7, 9, 5};
+        int profit = 0;
+        int daysInTheMarket = price.length;
+        for (int tDay = 0; tDay < daysInTheMarket - 1; tDay++) {
+            int buyPrice = price[tDay];
+            for (int nTD = tDay + 1; nTD < daysInTheMarket; nTD++) {
+                int sellPrice = price[nTD];
+                if ((sellPrice - buyPrice) > profit) {
+                    profit = sellPrice - buyPrice;
+                }
             }
-        }
 
+        }
+        System.out.println(profit);
     }
-    System.out.println(profit);
-    }
+
 
     @Given("I swap name {string} and lastname {string}")
     public void iSwapNameAndLastname(String name, String surname) {
-        Map <String, String> myTestMap = new LinkedHashMap();
+        Map<String, String> myTestMap = new LinkedHashMap();
         myTestMap.put("name", name);
         myTestMap.put("surname", surname);
         System.out.println(myTestMap);
         String mySwap = myTestMap.get("name");
-        myTestMap.put("name", surname);
+        myTestMap.put("name", myTestMap.get("surname")); //gets 'surname from map not from Cucumber step
         myTestMap.put("surname", mySwap);
         System.out.println(myTestMap);
+        //info.put("name", info.get("surname"));
 
     }
 
@@ -252,11 +251,9 @@ public class JavaExercises {
     public void iGoToPage(String url) {
         if (url.equals("quote")) {
             url = "https://skryabin.com/market/quote.html";
-        }
-        else if (url.equals("yahoo")) {
+        } else if (url.equals("yahoo")) {
             url = "https://www.yahoo.ru/";
-        }
-        else {
+        } else {
             System.out.println("No implementation for " + url);
         }
         getDriver().get(url);
@@ -284,8 +281,9 @@ public class JavaExercises {
     public void iNavigateToPage(String url) {
         if (url.equals("google")) {
             url = "https://www.google.com/";
+        } else {
+            System.out.println("No implementation for " + url);
         }
-        else {System.out.println("No implementation for " + url);}
         getDriver().navigate().to(url);
     }
 
@@ -294,16 +292,13 @@ public class JavaExercises {
         if (resolution.equals("phone")) {
             getDriver().manage().window().setSize(new Dimension(400, 768));
             Thread.sleep(1500);
-        }
-        else if (resolution.equals("tablet")) {
+        } else if (resolution.equals("tablet")) {
             getDriver().manage().window().setSize(new Dimension(800, 600));
             Thread.sleep(1500);
-        }
-        else if (resolution.equals("desktop")) {
+        } else if (resolution.equals("desktop")) {
             getDriver().manage().window().setSize(new Dimension(1024, 768));
             Thread.sleep(1500);
-        }
-        else {
+        } else {
             System.err.println("No such size. Screen was maximized");
             getDriver().manage().window().maximize();
             Thread.sleep(1500);
@@ -375,14 +370,14 @@ public class JavaExercises {
             case "password" -> field = "//b[@name='password']";
             case "agreedToPrivacyPolicy" -> field = "//b[@name='agreedToPrivacyPolicy']";
             case "thirdParty" -> field = "//span[@id='thirdPartyResponseMessage']";
-            default ->  System.err.println("\nNo such field implemented: " + field);
-            }
-            String actualValue = getDriver().findElement(By.xpath(field)).getText();
-            if (field.equals("//b[@name='password']")) {
-                value = "[entered]";
-            }
-            assertThat(actualValue).contains(value);
+            default -> System.err.println("\nNo such field implemented: " + field);
         }
+        String actualValue = getDriver().findElement(By.xpath(field)).getText();
+        if (field.equals("//b[@name='password']")) {
+            value = "[entered]";
+        }
+        assertThat(actualValue).contains(value);
+    }
 
 
     @And("I verify that Return Button is visible")
@@ -402,5 +397,67 @@ public class JavaExercises {
         System.out.println(getDriver().switchTo().alert().getText());
         getDriver().switchTo().alert().dismiss();
 
+    }
+
+    @Given("I remove wovels from text")
+    public void iRemoveWovelsFromText() {
+        String text = "rebauiobtsabuoiessdewnfobaghioho";
+        System.out.println(text);
+        String vowels = "eioau";
+        for (int i = 0; i < vowels.length(); i++) {
+            String vowel = text.substring(i, i + 1);
+            text.replace(vowel, " ");
+        }
+        System.out.println(text);
+
+    }
+
+    @Given("I swap an array elements {int} and {int}")
+    public void iSwapAnArrayElementsAnd(int arg0, int arg1) {
+        int[] myArr = {5, 2, 9, 7, 3};
+        //    for (int element : myArr) {
+        //        System.out.print(element + " ");
+        //    }
+        //    System.out.println();
+        int tmp = myArr[arg0 - 1];
+        myArr[arg0 - 1] = myArr[arg1 - 1];
+        myArr[arg1 - 1] = tmp;
+        //    for (int element : myArr) {
+        //        System.out.print(element + " ");
+        //    }
+    }
+
+
+    @Given("I input integer {int} and check if it is devisible")
+    public String iInputIntegerAndCheckIfItIsDevisible(int myInt) {
+        //    Scanner scanner = new Scanner(System.in);
+        //    int n = scanner.nextInt();
+        //    scanner.close();
+        if (myInt % 3 == 0 && myInt % 4 == 0) {
+            return "Divisible by 3 and 4";   // if your method should return something
+            //     System.out.println("Divisible by 3 and 4");
+        } else if (myInt % 4 == 0) {
+            return ("Divisible by 4");
+        } else if (myInt % 3 == 0) {
+            System.out.println("Divisible by 3");
+        } else {
+            System.out.println("Input another integer");
+        }
+        return "smth";
+    }
+
+    @Given("I print all positive integers")
+    public void iPrintAllPositiveIntegers() {
+        for (int i = 0; i <= Integer.MAX_VALUE; i++) {
+            System.out.println(i);
+        }
+    }
+
+    @Given("I print all integers")
+    public void iPrintAllIntegers() {
+        System.out.println(Integer.MAX_VALUE);
+        for (int i = Integer.MIN_VALUE; i <= Integer.MAX_VALUE; i++) {
+            System.out.println(i);
+        }
     }
 }
