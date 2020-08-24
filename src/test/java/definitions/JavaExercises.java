@@ -249,12 +249,12 @@ public class JavaExercises {
 
     @Given("I go to {string} page")
     public void iGoToPage(String url) {
-        if (url.equals("quote")) {
-            url = "https://skryabin.com/market/quote.html";
-        } else if (url.equals("yahoo")) {
-            url = "https://www.yahoo.ru/";
-        } else {
-            System.out.println("No implementation for " + url);
+        switch (url) {
+            case "quote" -> url = "https://skryabin.com/market/quote.html";
+            case "google" -> url = "https://www.google.com/";
+            case "yahoo" -> url = "https://www.yahoo.com/";
+            case "usps" -> url = "https://www.usps.com/";
+            default -> System.out.println("No implementation for " + url);
         }
         getDriver().get(url);
     }
@@ -455,9 +455,71 @@ public class JavaExercises {
 
     @Given("I print all integers")
     public void iPrintAllIntegers() {
-        System.out.println(Integer.MAX_VALUE);
+        //System.out.println(Integer.MAX_VALUE);
         for (int i = Integer.MIN_VALUE; i <= Integer.MAX_VALUE; i++) {
             System.out.println(i);
+        }
+    }
+
+@Given("I print all numbers from to {int}")
+    public void iPrintAllNumbersFromTo(int n) {
+        for (int i = 0; i <= n; i++) {
+            System.out.print(i + " ");
+        }
+
+    }
+
+    @Given("I print all numbers plus negative {int}")
+    public void iPrintAllNumbersPlusNegative(int n) {
+        for (int i = -n; i <= n; i++) {
+            System.out.print(i + " ");
+        }
+    }
+
+    @Given("I print all integer array")
+    public void iPrintAllIntegerArray() {
+        int[] myArrInt = {2, 12, 85, 3, 199, 47, 1, 800};
+            for (int element : myArrInt) {
+                System.out.print(element + " ");
+            }
+    }
+
+    @Given("I print all even numbers from integer array")
+    public void iPrintAllEvenNumbersFromIntegerArray() {
+        int[] myArrInt = {2, 12, 85, 3, 199, 47, 1, 800};
+        for (int element : myArrInt) {
+            if (element%2 == 0) {
+            System.out.print(element + " ");
+            }
+        }
+    }
+
+    @Given("I check if array is empty")
+    public boolean iCheckIfArrayIsEmpty() {
+        String[] myArr = {"de", "re"};
+            if (myArr.length > 0) {
+                return false;
+            }
+            else {
+                return true;
+            }
+    }
+
+    @Given("I print modified int array up to {int}")
+    public void iPrintModifiedIntArrayUpTo(int n) {
+        for (int i = 0; i <= n; i++) {
+            if (i%3 == 0 && i%5 == 0) {
+                System.out.print("FizzBuzz ");
+            }
+            else if (i%3 == 0) {
+                System.out.print("Fizz ");
+            }
+            else if (i%5 == 0) {
+                System.out.print("Buzz ");
+            }
+            else {
+                System.out.print(i + " ");
+            }
         }
     }
 }

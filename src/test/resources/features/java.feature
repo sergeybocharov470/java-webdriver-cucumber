@@ -157,4 +157,29 @@
   Scenario: min and max integers
     Given I print all integers
 
+@Day8
+  Scenario: all numbers up to n
+    Given I print all numbers from to 30
 
+
+@Day8
+  Scenario: all numbers -n to n
+    Given I print all numbers plus negative 18
+
+
+@Day8
+  Scenario: I print all integer array
+    Given I print all integer array
+
+
+@Day8
+    Scenario: even numbers from integer array
+      Given I print all even numbers from integer array
+
+@Day8
+  Scenario: check if array is empty
+    Given I check if array is empty
+
+@Day8
+  Scenario: numbers to n divisible
+    Given I print modified int array up to 48
