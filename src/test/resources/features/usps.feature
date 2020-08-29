@@ -34,6 +34,7 @@
 
 @Day8
     Scenario: Calculate price
+    #verified running 20200828
       Given I go to "usps" page
       When I go to Calculate Price Page
       And I select "Canada" with "Postcard" shape
@@ -43,6 +44,7 @@
 
 @Day8
     Scenario: Verify location
+      # verified running 20200828  using "spinner" explicit wait
       Given I go to "usps" page
       When I perform "Free Boxes" search
       And I set "Mail & Ship" in filters
@@ -54,9 +56,10 @@
 
 @Day8
     Scenario: Quadcopters delivery
-    not implemented yet 20200823
+    # implemented  20200828
       Given I go to "usps" page
       When I go to "Help" tab
+    # pay attention to implementation of the step definition below. Utilisation of a 'spinner' element.
       And I perform "Quadcopters delivery" help search
       Then I verify that no results of "Quadcopters delivery" available in help search
 

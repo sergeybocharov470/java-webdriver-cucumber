@@ -254,6 +254,8 @@ public class JavaExercises {
             case "google" -> url = "https://www.google.com/";
             case "yahoo" -> url = "https://www.yahoo.com/";
             case "usps" -> url = "https://www.usps.com/";
+            case "UnitConverters" -> url = "https://www.unitconverters.net/";
+            case "calculator" -> url = "https://www.calculator.net/";
             default -> System.out.println("No implementation for " + url);
         }
         getDriver().get(url);
@@ -399,18 +401,30 @@ public class JavaExercises {
 
     }
 
-    @Given("I remove wovels from text")
-    public void iRemoveWovelsFromText() {
-        String text = "rebauiobtsabuoiessdewnfobaghioho";
-        System.out.println(text);
-        String vowels = "eioau";
-        for (int i = 0; i < vowels.length(); i++) {
-            String vowel = text.substring(i, i + 1);
-            text.replace(vowel, " ");
-        }
-        System.out.println(text);
 
+
+
+
+
+
+
+    @Given("I remove vowels from text {string}")
+    public String iRemoveVowelsFromText(String text) {
+      return text.replaceAll("[eioau]", "");
     }
+
+
+
+
+
+
+
+
+
+    public String textWithoutVowels (String arg) {
+        return arg.replaceAll("[eioau]", "");
+    }
+
 
     @Given("I swap an array elements {int} and {int}")
     public void iSwapAnArrayElementsAnd(int arg0, int arg1) {
@@ -471,7 +485,7 @@ public class JavaExercises {
 
     @Given("I print all numbers plus negative {int}")
     public void iPrintAllNumbersPlusNegative(int n) {
-        for (int i = -n; i <= n; i++) {
+        for (int i = n; i <= -n; i++) {
             System.out.print(i + " ");
         }
     }

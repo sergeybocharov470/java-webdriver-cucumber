@@ -137,7 +137,7 @@
 
 @team1
   Scenario: removeall vowels
-    Given I remove wovels from text
+    Given I remove vowels from text "awefkqeweqtareuymvdisjewi"
 
 @Day7
   Scenario: swap array elements
@@ -164,7 +164,7 @@
 
 @Day8
   Scenario: all numbers -n to n
-    Given I print all numbers plus negative 18
+    Given I print all numbers plus negative -18
 
 
 @Day8
