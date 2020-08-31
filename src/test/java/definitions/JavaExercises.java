@@ -4,13 +4,18 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.apache.maven.surefire.shared.utils.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.seleniumhq.jetty9.util.StringUtil;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.List;
+import java.util.Scanner;
 
 import static java.lang.Integer.MAX_VALUE;
+import static org.apache.maven.surefire.shared.utils.StringUtils.split;
 import static org.assertj.core.api.Assertions.assertThat;
 import static support.TestContext.getDriver;
 
@@ -41,7 +46,7 @@ public class JavaExercises {
 
     @Then("Does given string {string} contain {string}")
     public void givenStringContains(String mystring, String target) {
-        Boolean a;
+        boolean a;
         if (mystring.contains(target)) {
             a = true;
         } else {
@@ -256,6 +261,7 @@ public class JavaExercises {
             case "usps" -> url = "https://www.usps.com/";
             case "UnitConverters" -> url = "https://www.unitconverters.net/";
             case "calculator" -> url = "https://www.calculator.net/";
+            case "ups" -> url = "https://www.ups.com/us/en/Home.page";
             default -> System.out.println("No implementation for " + url);
         }
         getDriver().get(url);
@@ -535,5 +541,57 @@ public class JavaExercises {
                 System.out.print(i + " ");
             }
         }
+    }
+
+    @Given("String {string} to reverse")
+    public void stringToReverse(String myString) {
+        StringBuffer myBuffer = new StringBuffer(myString);
+        myBuffer = myBuffer.reverse();
+        System.out.println(myBuffer);
+        System.out.println();
+        for (int i = 1; i < myBuffer.length() ; i++) {
+            if ((i+1)%3 == 0) {
+                System.out.print(myBuffer.charAt(i));
+            }
+        }
+
+
+
+
+
+    }
+
+    @Given("I input two numbers for adding")
+    public void iInputTwoNumbersForAdding() {
+
+        int num1, num2, sum;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter First Number: ");
+        num1 = sc.nextInt();
+        getDriver().manage().logs().get("browser");
+
+        System.out.println("Enter Second Number: ");
+        num2 = sc.nextInt();
+
+        sc.close();
+        sum = num1 + num2;
+        System.out.println("Sum of these numbers: " + sum);
+
+    }
+
+    @Given("{int} and {int} print ranges")
+    public void andPrintRanges(int first, int second) {
+
+
+    }
+
+    @Given("{string} sentence to reverse")
+    public void sentenceToReverse(String initialString) {
+        String[] myArray = initialString.split(" ");
+        for (int i = myArray.length - 1; i >= 0; i--) {
+            System.out.print(myArray[i] + " ");
+
+        }
+
     }
 }

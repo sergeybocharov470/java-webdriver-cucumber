@@ -183,3 +183,28 @@
 @Day8
   Scenario: numbers to n divisible
     Given I print modified int array up to 48
+
+@Day10
+  Scenario: reverse every 3-rd character of the string
+  #implemented 20200829
+    Given String "My favorite string" to reverse
+
+
+@Day10
+  Scenario: Write a java program to add 2 numbers and it will print addition.
+    Given I input two numbers for adding
+
+@Day10
+  Scenario: User inputs two numbers which are divided by 5
+    Given 25 and 80 print ranges
+
+@Day10
+  Scenario: Speak like Yoda - reverse words in a sentence (Example: "I am Automation Engineer" => "Engineer Automation am I") (hint - method .split(" "))
+  #implemented 20200829
+  Given "A brilliant example for a sentence to be reversed" sentence to reverse
+
+
+
+@assesment
+  Scenario: assesment
+    Given

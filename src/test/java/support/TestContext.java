@@ -2,10 +2,7 @@
 package support;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Platform;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -14,10 +11,13 @@ import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -31,6 +31,25 @@ public class TestContext {
     public static WebDriver getDriver() {
         return driver;
     }
+
+    //added 20200830 Day10 study
+
+    public static WebDriverWait getWait() {
+        return getWait(5);
+    }
+
+    public static WebDriverWait getWait(int timeout) {
+        return new WebDriverWait(driver, timeout);
+    }
+
+    public static Actions getActions() {
+        return new Actions(driver);
+    }
+
+    public static JavascriptExecutor getExecutor() {
+        return (JavascriptExecutor) driver;
+    }
+    /////////////////////////////////////////////////////////
 
     public static void initialize() {
         initialize("chrome", "local", false);
