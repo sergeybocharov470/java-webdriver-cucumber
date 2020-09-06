@@ -4,21 +4,28 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.assertj.core.data.Percentage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.*;
-
-import static support.TestContext.getDriver;
+import static support.TestContext.*;
 
 public class uspsProject {
     @Given("I open USPS website")
@@ -73,7 +80,7 @@ public class uspsProject {
     @Then("I calculate the price and validate cost is {string}")
     public void iCalculateThePriceAndValidateCostIs(String myPrice) {
         getDriver().findElement(By.xpath("//input[@class='btn btn-pcalc btn-default']")).click();
-        assertThat(getDriver().findElement(By.xpath("//div[@id='cost-0']")).getText().equals(myPrice));
+        assertThat(getDriver().findElement(By.xpath("//div[@id='cost-0']")).getText()).contains(myPrice);
     }
 
     @When("I perform {string} search")  //I perform "Free Boxes" search
@@ -182,7 +189,7 @@ public class uspsProject {
     public void iVerifyThatNoResultsOfAvailableInHelpSearch(String expectedString) {
         List<WebElement> myList = getDriver().findElements(By.xpath("//div[@class='resultBody']"));     //li[contains(@class,'kbResultStencil')]
         for (WebElement element : myList) {
-            assertThat(!element.getText().contains(expectedString));
+            assertThat(element.getText()).doesNotContain(expectedString);
 
         }
     }
@@ -228,15 +235,153 @@ public class uspsProject {
         getDriver().findElement(By.xpath("//select[@id='servicesStateSelect']")).click();
         Select selectState = new Select(getDriver().findElement(By.xpath("//select[@id='servicesStateSelect']")));
         selectState.selectByValue(myState);
+        //getDriver().manage().timeouts().implicitlyWait(4000, TimeUnit.MILLISECONDS);
+        //System.out.println(selectState.selectByValue(myState).getValue()   );
         getDriver().findElement(By.xpath("//a[contains(text(),'Go to Results')]")).click();
     }
 
     @Then("I verify phone number is {string}")
     public void iVerifyPhoneNumberIs(String myPhNumber) {
-        List<WebElement> result = getDriver().findElements(By.xpath("//div[@id='po-location-detail']"));
+        List<WebElement> result = getDriver().findElements(By.xpath("//div[contains(@class,'list-item-location popover-trigger')]"));
+        List<String> phones = new ArrayList<>();
+        StringBuilder allPhones = new StringBuilder();
         for (WebElement element : result) {
-            assertThat(element.getText().contains(myPhNumber));
+                getExecutor().executeScript("arguments[0].click();", element);
+                WebDriverWait myWait = new WebDriverWait(getDriver(),3);
+                myWait.until(ExpectedConditions.visibilityOf(getDriver().findElement(By.xpath("//div[@class='phone-wrapper']"))));
+                phones.add(getDriver().findElement(By.xpath("//div[@class='phone-wrapper']")).getText());
         }
+        for (String phone : phones) {
+            allPhones.append(phone);
+        }
+        assertThat(allPhones.toString()).contains(myPhNumber);
+
+    }
+
+
+    @When("I go to Lookup ZIP page by address")
+    public void iGoToLookupZIPPageByAddress() {
+        Actions mouseOver = new Actions(getDriver());
+        mouseOver.moveToElement(getDriver().findElement(By.xpath("//a[@class='nav-first-element menuitem']"))).perform();
+        getDriver().findElement(By.xpath("//*[contains(@alt,'Zip Code')]")).click();
+        getDriver().findElement(By.xpath("//a[contains(@class, 'zip-code-address')]")).click();
+        assertThat(getDriver().findElement(By.xpath("//form[@id='zip-code-address-form']")).isDisplayed());
+    }
+
+    @And("I fill out {string} street, {string} city, {string} state")
+    public void iFillOutStreetCityState(String street, String city, String state) {
+        getDriver().findElement(By.xpath("//input[@id='tAddress']")).sendKeys(street);
+        getDriver().findElement(By.xpath("//input[@id='tCity']")).sendKeys(city);
+        Select myState = new Select(getDriver().findElement(By.xpath("//select[@id='tState']")));
+        myState.selectByValue(state);
+        getDriver().manage().timeouts().implicitlyWait(4000,TimeUnit.MILLISECONDS);
+        getDriver().findElement(By.xpath("//a[@id='zip-by-address']")).click();
+    }
+
+    @Then("I validate {string} zip code exists in the result")
+    public void iValidateZipCodeExistsInTheResult(String myZip) {
+        WebElement element = getDriver().findElement(By.xpath("//div[@id='zipByAddressDiv']"));
+        WebDriverWait myWait = new WebDriverWait(getDriver(),3);
+        myWait.until(ExpectedConditions.textToBePresentInElement(element, myZip));
+        assertThat(element.getText()).contains(myZip);
+
+    }
+// scenatio Every door direct mail
+    @When("I go to {string} under {string}")   //I go to "Every Door Direct Mail" under "Business"
+    public void iGoToUnder(String subOption, String option) {
+        Actions mouseOver = new Actions(getDriver());
+        mouseOver.moveToElement(getDriver().findElement(By.xpath("//a[text()='" + option + "']"))).perform();
+
+        getDriver().findElement(By.xpath("//a[text()='" + subOption + "']")).click();
+        //a[@role='menuitem' and text()='Every Door Direct Mail']
+    }
+
+    @And("I search for {string}")    //I search for "4970 El Camino Real, Los Altos, CA 94022"
+    public void iSearchFor(String address) {
+        getDriver().findElement(By.xpath("//input[@id='address']")).sendKeys(address);
+        //input[@id='address']
+
+        //push button
+        getDriver().findElement(By.xpath("//button[@class='search-form-field-icon search-form-field-icon-search']")).click();
+        //button[@class='search-form-field-icon search-form-field-icon-search']
+
+        }
+
+
+    @And("I click {string} on the map")    //"Show Table"
+    public void iClickOnTheMap(String myElement) {
+        //explicitly wait
+        WebElement myButton = getDriver().findElement(By.xpath("//a[text()='" + myElement + "']"));
+        WebDriverWait waitForMyButtonClickable = new WebDriverWait(getDriver(),10);
+        waitForMyButtonClickable.until(ExpectedConditions.elementToBeClickable(myButton));  //   .visibilityOfElementLocated(By.xpath("//a[@class='route-table-toggle']")));  ////form[@id='formSearch']
+        getExecutor().executeScript("arguments[0].click();", myButton);
+    }
+
+    @When("I click {string} on the table")   //Select All
+    public void iClickOnTheTable(String label) {
+        getExecutor().executeScript("arguments[0].click();", getDriver().findElement(By.xpath("//a[contains(@class,'totalsArea')]")));
+
+    }
+
+    @And("I close modal window")
+    public void iCloseModalWindow() {
+        getDriver().findElement(By.xpath("//button[@id='dropOffDone']")).click();
+    }
+
+    @Then("I verify that summary of all rows of Cost column is equal Approximate Cost in Order Summary")
+    public void iVerifyThatSummaryOfAllRowsOfCostColumnIsEqualApproximateCostInOrderSummary() throws ParseException {
+        /*List<WebElement> costList = new ArrayList<>(getDriver().findElements(By.xpath("//table[@class='dojoxGridRowTable']//td[@idx='7']")));
+        double totalCostCalculated = 0;
+
+        while (costList.size() < totalCount) {
+            System.out.println("Actual elements size: " + costList.size());
+            int lastIndex = costList.size() - 1;
+            getActions().moveToElement(costList.get(lastIndex)).perform();
+            costList = getDriver().findElements(costListSelector);
+
+            WebDriverWait myWait = new WebDriverWait(getDriver(),5);
+            myWait.until(ExpectedConditions.textToBePresentInElement(cost, "$"));
+            totalCostCalculated += Double.parseDouble(cost.getText().replace("$", ""));
+
+
+        double totalCost = Double.parseDouble(getDriver().findElement(By.xpath("//span[@class='approx-cost']")).getText());
+        assertThat(totalCost).isCloseTo(totalCostCalculated, Percentage.withPercentage(1.5));
+*/
+
+
+        String totalCountString = getDriver().findElement(By.xpath("//a[contains(@class, 'totalsArea')]")).getText();
+        int totalCount = Integer.parseInt(totalCountString.replaceAll("\\D*", ""));
+
+        By costListSelector = By.xpath("//td[@idx='7']");
+        List<WebElement> costList = getDriver().findElements(costListSelector);
+        System.out.println("Expected elements size: " + totalCount);
+
+        // dealing with infinite scroll
+        while (costList.size() < totalCount) {
+            System.out.println("Actual elements size: " + costList.size());
+            int lastIndex = costList.size() - 1;
+            getActions().moveToElement(costList.get(lastIndex)).perform();
+            costList = getDriver().findElements(costListSelector);
+        }
+        System.out.println("Actual elements size: " + costList.size());
+
+        Locale locale = new Locale("en", "US");
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
+        double actualTotal = 0;
+        for (WebElement cost : costList) {
+            double costTotal = formatter.parse(cost.getText()).doubleValue();
+            actualTotal += costTotal;
+        }
+        System.out.println("Actual total " + actualTotal);
+
+        String expectedTotalString = getDriver().findElement(By.xpath("//span[@class='approx-cost']")).getText();
+        double expectedTotal = Double.parseDouble(expectedTotalString);
+        System.out.println("Expected total " + expectedTotal);
+
+        assertThat(actualTotal).isCloseTo(expectedTotal, Percentage.withPercentage(1));
+
+
+
 
     }
 }

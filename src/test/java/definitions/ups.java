@@ -7,11 +7,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.assertj.core.api.Assertions.*;
-import static support.TestContext.getDriver;
-import static support.TestContext.getExecutor;
+import static support.TestContext.*;
 
 public class ups {
     @And("I open Shipping menu")
@@ -27,7 +27,7 @@ public class ups {
     }
 
     @When("I fill out origin shipment fields")
-    public void iFillOutOriginShipmentFields() {
+    public void iFillOutOriginShipmentFields() throws InterruptedException{
 
         getDriver().findElement(By.xpath("//input[@id='originname']")).sendKeys("Sergey Bocharov");
         getDriver().findElement(By.xpath("//input[@id='originaddress1']")).sendKeys("4601 Willowgrove Drive");
@@ -35,7 +35,8 @@ public class ups {
 
         getDriver().findElement(By.xpath("//input[@id='originemail']")).sendKeys("sbocharov222@example.org");   /// mock email
         getDriver().findElement(By.xpath("//input[@id='originphone']")).sendKeys("4109553322");
-
+        System.out.println("I fill out origin shipment fields");
+        //Thread.sleep(3000);
         /*WebDriverWait myCityName = new WebDriverWait(getDriver(), 3);
         myCityName.until(ExpectedConditions.attributeContains(getDriver().findElement(By.xpath("//input[@id='origincity']")),  "Value", value ));
 
@@ -56,19 +57,23 @@ public class ups {
         //return to the default content
         getDriver().switchTo().defaultContent();
 
-        //Thread.sleep(5000);
+        //Thread.sleep(2000);
 
         //click() with script instead of direct webelement clicking
         WebElement element = getDriver().findElement(By.xpath("//button[@id='nbsBackForwardNavigationContinueButton']"));
         getExecutor().executeScript("arguments[0].click();",	element);
         //getDriver().findElement(By.xpath("//button[@id='nbsBackForwardNavigationContinueButton']")).click();
+        System.out.println("I submitted");
     }
 
     @Then("I verify origin shipment fields submitted")
-    public void iVerifyOriginShipmentFieldsSubmitted() {
+    public void iVerifyOriginShipmentFieldsSubmitted() throws InterruptedException {
         //verify with a file data
         //simplified prototype. Necessary to use data from file
+        //Thread.sleep(3000);
         assertThat(getDriver().findElement(By.xpath("//div[@class='ups-group ups-group_condensed']")).getText()).contains("Sergey Bocharov");
+        System.out.println("I verify origin shipment fields submitted");
+        //Thread.sleep(3000);
     }
 
     @And("I cancel the shipment form")
@@ -101,5 +106,39 @@ public class ups {
 
     @When("I fill out destination shipment fields")
     public void iFillOutDestinationShipmentFields() {
+
+        getDriver().findElement(By.xpath("//input[@id='destinationname']")).sendKeys("Mikhail");
+        getDriver().findElement(By.xpath("//input[@id='destinationaddress1']")).sendKeys("4970 El Camino Real");
+        getDriver().findElement(By.xpath("//input[@id='destinationpostal']")).sendKeys("94022");
+        getDriver().findElement(By.xpath("//input[@id='destinationemail']")).sendKeys("MikhailE@example.org");
+        //getWait().until(ExpectedConditions.attributeToBeNotEmpty(getDriver().findElement(By.xpath("//input[@id='destinationcity']")), "Value"));
+        //getWait().until(ExpectedConditions.textToBe(By.xpath("//input[@id='destinationcity']", "Califirnia")
+        //getDriver().findElement(By.xpath("//button[@id='nbsBackForwardNavigationContinueButton']")).click();
+        System.out.println("Destination shipment fields are filled out");
+    }
+
+
+
+    @And("I set packaging type and weight")
+    public void iSetPackagingTypeAndWeight() throws InterruptedException {
+        // packaging size
+        String packaging = "//select[@id='nbsPackagePackagingTypeDropdown0']";
+        getWait().until(ExpectedConditions.elementToBeClickable(By.xpath(packaging)));
+        Select packagingType = new Select(getDriver().findElement(By.xpath(packaging)));
+        packagingType.selectByValue("59");
+        getDriver().findElement(By.xpath("//input[@id='nbsPackagePackageWeightField0']")).sendKeys("2");
+        System.out.println("I filled out packaging fields");
+        Thread.sleep(3000);
+    }
+
+
+
+    @Then("I verify total charges appear")
+    public void iVerifyTotalChargesAppear() throws InterruptedException {
+        WebElement charged = getDriver().findElement(By.xpath("//span[@id='total-charges-spinner']"));
+        WebDriverWait waitForCharges = new WebDriverWait(getDriver(),4);
+        waitForCharges.until(ExpectedConditions.visibilityOf(charged));
+        Thread.sleep(3000);
+        System.out.println(charged.getAttribute("text"));
     }
 }

@@ -594,4 +594,95 @@ public class JavaExercises {
         }
 
     }
+
+
+    @Given("find two max numbers in array {string}")   //2 max numbers in an array
+    public void findTwoMaxNumbersInArray(String myArr) {
+        String[] strArr = myArr.split(",");
+        int max1 = Integer.MIN_VALUE;
+        int max2 = Integer.MIN_VALUE;
+            for (int i = 0; i < strArr.length; i++) {
+                if (Integer.parseInt(strArr[i]) > max1) {
+                    max1 = Integer.parseInt(strArr[i]);
+                }
+            }
+            for (int j = 0; j < strArr.length; j++) {
+                if (Integer.parseInt(strArr[j]) > max2 && Integer.parseInt(strArr[j]) < max1) {
+                    max2 = Integer.parseInt(strArr[j]);
+                }
+
+            }
+        System.out.println("Maximum 1 is: " + Integer.toString(max1) + ".");
+        System.out.println("Maximum 2 is: " + Integer.toString(max2) + ".");
+    }
+
+    @Given("find duplicates in array {string}")
+    public boolean findDuplicatesArray(String givenString) {
+        String[] myArr = givenString.split(",");
+            for (int i = 0; i < myArr.length - 1; i++) {
+               for (int j = i + 1; j < myArr.length; j++) {
+                    if (myArr[j].equals(myArr[i])) {
+                        //System.out.println(myArr[j]);
+                        return true;
+                        //break;
+                    }
+
+                }
+
+            }
+        //System.out.println();
+        return false;
+    }
+
+    @Given("string to analyse {string}")  //baobab     //My string for extended character analysis
+    public void stringToAnalyse(String myString) {
+    // Creating a HashMap containing char
+    // as a key and occurrences as  a value
+    HashMap<Character, Integer> charCountMap = new HashMap<Character, Integer>();
+
+    // Converting given string to char array
+
+    char[] strArray = myString.toCharArray();
+
+    // checking each char of strArray
+        for (char c : strArray) {
+        if (charCountMap.containsKey(c)) {
+
+            // If char is present in charCountMap,
+            // incrementing it's count by 1
+            charCountMap.put(c, charCountMap.get(c) + 1);
+        }
+        else {
+
+            // If char is not present in charCountMap,
+            // putting this char to charCountMap with 1 as it's value
+            charCountMap.put(c, 1);
+        }
+    }
+
+    // Printing the charCountMap
+        for (Map.Entry entry : charCountMap.entrySet()) {
+        System.out.println(entry.getKey() + " " + entry.getValue());
+    }
+}
+
+
+    /*public void stringToAnalyse(String myString) {
+        for (int i = 0; i < myString.length() - 1; i++) {
+            int count = 1;
+            String mySymbol = myString.substring(i, i + 1);
+            for (int j = i + 1; j < myString.length(); j++) {
+                if (myString.substring(j, j + 1).equals(myString.substring(i, i + 1))) {
+                    count += 1;
+
+                }
+
+            }
+            System.out.println("Symbol " + mySymbol + " appears " + count + " time(s)");
+        }
+    }  */
+
+
+
+
 }

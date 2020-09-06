@@ -204,7 +204,26 @@
   Given "A brilliant example for a sentence to be reversed" sentence to reverse
 
 
+@Day11
+#Write a function that finds if word is palindrome
+#Write a function that counts number of each character in a string
 
-@assesment
-  Scenario: assesment
-    Given
+  Scenario: 2 max numbers in an array
+  #implemented 20200902
+    Given find two max numbers in array "2,34,23,-52,-79,54,33,34,12,-54,54,54,34"
+
+
+@Day11
+  Scenario: if array contains duplicates
+    #implemented 20200902
+    Given find duplicates in array "yes,yep,ya,no,not,nop,nor,non,no,ya"
+    #And find duplicates in str array#"2,34,23,-52,-79,54,33,34,12,-54,54,54,34"
+
+@Day11
+  Scenario: function that counts number of each character in a string
+    Given string to analyse "baobab"
+
+
+#@assesment
+#  Scenario: assesment
+#    Given
