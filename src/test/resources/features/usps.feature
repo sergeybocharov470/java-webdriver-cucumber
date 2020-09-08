@@ -127,7 +127,7 @@ Scenario: Wrong store id does not match
       And I choose "select" "Stamp Shape" "Vertical" filter "checkbox"
       And I choose "select" "Color" "Blue" filter "checkbox"
       Then I verify "Blue" filter "set"
-      And I verify "Vertica2" filter "set"
+      And I verify "Vertical" filter "set"
       Then I verify 12 items found in "resultset"
       And I verify that items below 12 dollars exists in "resultset"
 

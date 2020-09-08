@@ -10,7 +10,7 @@ import static support.TestContext.getDriver;
 
 public class Usps_support {
 
-    public static String xpathClick (String myUrl, String filter, String option) {  //xpathClick(myUrl,null, option)
+    public static String xpathClick (String myUrl, String filter, String option) {
         String xpath = "";
         if (myUrl.equals("https://store.usps.com/store") && option.equals("checkbox")) {
             switch (filter) {

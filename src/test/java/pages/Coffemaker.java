@@ -6,6 +6,42 @@ public class Coffemaker {
 
     protected String[] type = {"Dripper", "French press", "Espresso"};
 
+    protected boolean powerState;
+
+    protected boolean brewingState;
+
+    protected boolean overheat;
+
+    public boolean isOverheat() {
+        return overheat;
+    }
+
+    public void setOverheat(boolean overheatOn) {
+        this.overheat = overheatOn;
+    }
+
+
+
+
+
+    public boolean isPowerState() {
+        return powerState;
+    }
+
+    public void setPowerState(boolean powerSwitch) {
+        this.powerState = powerSwitch;
+    }
+
+    public boolean isBrewingState() {
+        return brewingState;
+    }
+
+    public void setBrewingState(boolean brewingSwitch) {
+        this.brewingState = brewingSwitch;
+    }
+
+
+
     public String getBrandName() {
         return brandName;
     }
@@ -27,13 +63,14 @@ public class Coffemaker {
 
 
 
+    public boolean isCoffeeBrewed (boolean powerState, boolean brewingState, boolean overheat) {
+        if ((powerState && brewingState &! overheat)) {
 
+            return true;
+        }
+            return false;
 
-
-
-
-
-
+    }
 
 
 }

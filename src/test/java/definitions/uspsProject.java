@@ -29,6 +29,7 @@ import static definitions.Usps_support.webElementList;
 import static definitions.Usps_support.xpathClick;
 import static java.lang.System.*;
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.Assert.assertTrue;
 import static support.TestContext.*;
 
 public class uspsProject {
@@ -459,7 +460,7 @@ public class uspsProject {
         }
         out.println("Comparison result is: " + b);
         out.println();
-        assertThat(b);
+        assertTrue(b);
 
     }
 
