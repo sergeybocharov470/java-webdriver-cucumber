@@ -1,5 +1,7 @@
 package pages;
 
+import org.apache.logging.log4j.core.util.JsonUtils;
+
 public class Coffemaker {
 
     protected String brandName;
@@ -19,10 +21,6 @@ public class Coffemaker {
     public void setOverheat(boolean overheatOn) {
         this.overheat = overheatOn;
     }
-
-
-
-
 
     public boolean isPowerState() {
         return powerState;
@@ -56,8 +54,10 @@ public class Coffemaker {
         return makerType + " type";
     }
 
-    public void setBrandName(String brand) {
+    public String setBrandName(String brand) {
         this.brandName = brand.toUpperCase();
+
+        return brandName;
     }
 
 
@@ -72,5 +72,8 @@ public class Coffemaker {
 
     }
 
+    public void printBrandName() {
+        System.out.println(setBrandName("rowenta"));
+    }
 
 }

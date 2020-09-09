@@ -460,7 +460,7 @@ public class uspsProject {
         }
         out.println("Comparison result is: " + b);
         out.println();
-        assertTrue(b);
+        assertThat(b).isTrue();
 
     }
 
