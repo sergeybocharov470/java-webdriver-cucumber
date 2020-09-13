@@ -39,7 +39,7 @@ public class TestContext {
     //added 20200830 Day10 study
     public static Map<String, String> getDataFromYmlFile(String fileName) {
         try {
-            String path = System.getProperty("user.dir") + "src/test/resources/data" + fileName + ".yml";
+            String path = System.getProperty("user.dir") + "/src/test/resources/data/" + fileName + ".yml";
             return new Yaml().load(new FileInputStream(new File(path)));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);

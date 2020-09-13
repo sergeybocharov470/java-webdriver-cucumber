@@ -224,6 +224,13 @@
     Given string to analyse "baobab"
 
 
+@Day12
+  Scenario: I return all natural numbers in a given range
+  #implemented 20200913
+    Given I return all natural numbers between "0" and "3"
+
+
+
 #@assesment
 #  Scenario: assesment
 #    Given

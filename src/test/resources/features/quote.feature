@@ -198,3 +198,5 @@
       And element with xpath "//div[@class='well form-container container-fluid']//b[@name='address']" should contain text "4610 Main"
       And element with xpath "//div[@class='well form-container container-fluid']//b[@name='dateOfBirth']" should contain text "07/19/1980"
       And element with xpath "//div[@class='well form-container container-fluid']//b[@name='password']" should contain text "[entered]"
+
+

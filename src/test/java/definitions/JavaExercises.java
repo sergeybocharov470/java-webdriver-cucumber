@@ -25,8 +25,8 @@ public class JavaExercises {
         System.out.println(name);
     }
 
-    @Then("Is a given word {string} polyndrome?")
-    public void iReceivePolyndromeResult(String slovo) {
+    @Then("Is a given word {string} palindrome?")
+    public void iReceivePalindromeResult(String slovo) {
         int a = slovo.length();
         int i;
         String newslovo = slovo.substring(a);
@@ -38,16 +38,16 @@ public class JavaExercises {
         System.out.println("Reversed word: " + newslovo);
 
         if (newslovo.equalsIgnoreCase(slovo)) {
-            System.out.println("You bet, \"" + slovo + "\" is polyndrome");
+            System.out.println("You bet, \"" + slovo + "\" is palindrome");
         } else {
             System.out.println("Enter another word");
         }
     }
 
     @Then("Does given string {string} contain {string}")
-    public void givenStringContains(String mystring, String target) {
+    public void givenStringContains(String myString, String target) {
         boolean a;
-        if (mystring.contains(target)) {
+        if (myString.contains(target)) {
             a = true;
         } else {
             a = false;
@@ -59,13 +59,13 @@ public class JavaExercises {
     }
 
     @Then("Some string {string} contains certain consecutive chars")
-    public void givenStringShouldNotContainCertainConsequitiveChars(String teststring) {
+    public void givenStringShouldNotContainCertainConsequitiveChars(String testString) {
         String[] a = {"  ", "--", "__", ".."};
         int l = a.length;
         String res = "Test string contains ";
         String r1 = "";
         for (int i = 0; i < l; i++) {
-            if (teststring.contains(a[i])) {
+            if (testString.contains(a[i])) {
                 r1 = r1 + a[i] + " ,";
             }
         }
@@ -660,14 +660,7 @@ public class JavaExercises {
         }
     }
 
-    // Printing the charCountMap
-        for (Map.Entry entry : charCountMap.entrySet()) {
-        System.out.println(entry.getKey() + " " + entry.getValue());
-    }
-}
-
-
-    /*public void stringToAnalyse(String myString) {
+        /*public void stringToAnalyse(String myString) {
         for (int i = 0; i < myString.length() - 1; i++) {
             int count = 1;
             String mySymbol = myString.substring(i, i + 1);
@@ -681,6 +674,51 @@ public class JavaExercises {
             System.out.println("Symbol " + mySymbol + " appears " + count + " time(s)");
         }
     }  */
+
+    // Printing the charCountMap
+        for (Map.Entry entry : charCountMap.entrySet()) {
+        System.out.println(entry.getKey() + " " + entry.getValue());
+    }
+}
+
+    @Given("I return all natural numbers between {string} and {string}")
+    public void iReturnAllNaturalNumbersBetweenAnd(String minNumber, String maxNumber) {
+        int min = Integer.parseInt(minNumber);
+        int max = Integer.parseInt(maxNumber);
+
+        if (max < 2) {
+            System.out.println("No natural numbers in the range between " + minNumber + " and " + maxNumber);
+
+        }
+        else  {
+
+            if (min < 2) {min = 2;
+            }
+
+
+            String result = "";
+            for (int i = min; i <= max; i++) {
+                int count = 0;
+
+                for (int j = 2; j < i; j++) {
+                    if (i % j == 0) {
+                        count = count + 1;
+                    }
+
+                }
+                if (count == 0) {
+                    result = result + i + " ";
+
+                }
+
+            }
+            System.out.println("Natural numbers: " + result);
+        }
+    }
+
+
+
+
 
 
 
