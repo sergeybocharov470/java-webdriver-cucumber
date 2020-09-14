@@ -66,4 +66,15 @@ public class Quote_oop {
     }
 
 
+    @When("I fill out optional fields for {string} oop")
+    public void iFillOutOptionalFieldsForOop(String role) {
+        String make = dataFromFile(role, "car_make");
+        String state = dataFromFile(role, "country");
+        String phNumber = dataFromFile(role, "phone");
+        myPage.selectCarMake(make);
+        myPage.selectCountry(state);
+        myPage.fillPhone(phNumber);
+        System.out.println("Car maker from file: " + make);
+        System.out.println("Country of origin from file: " + state);
+    }
 }

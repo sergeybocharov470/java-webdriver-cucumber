@@ -5,6 +5,9 @@ package pages;
         import org.openqa.selenium.WebElement;
         import org.openqa.selenium.support.FindBy;
         import org.openqa.selenium.support.PageFactory;
+        import org.openqa.selenium.support.ui.Select;
+
+        import java.util.List;
 
         import static support.TestContext.getDriver;
 
@@ -50,6 +53,17 @@ public class QuoteForm {
     @FindBy(id = "formSubmit")
     private WebElement submit;
 
+    @FindBy(xpath = "//select[@name='carMake']/option")
+    private List<WebElement> carMakers;
+
+    @FindBy(xpath = "//select[@name='countryOfOrigin']")
+    private WebElement countries;
+
+    @FindBy(xpath = "//input[@name='phone']")
+    private WebElement phone;
+
+
+
     // constructor
 
     public QuoteForm() {
@@ -91,7 +105,31 @@ public class QuoteForm {
         }
     }
 
+    public void selectCarMake(String make) {
+        for (WebElement carMake : carMakers) {
+            //System.out.println(carMake.getText());
+            if (carMake.getText().equals(make)) {
+                carMake.click();
+                break;
+            }
+
+        }
+    }
+
+
+    public void selectCountry(String state) {
+        Select country = new Select(countries);
+        country.selectByValue(state);
+    }
+
+    public void fillPhone (String value) {
+        phone.sendKeys(value.replaceAll("\\D+", ""));
+        //System.out.println(value.replaceAll("\\D+", ""));
+    }
+
+
     public void submit() {
+
         submit.click();
     }
 

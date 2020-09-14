@@ -6,9 +6,7 @@ Feature: Quote OOP
     Given I open "quote" page oop
     #And I wait for 3 sec
     When I fill out required fields for "user" oop
-  And I wait for 3 sec
     And I submit the form oop
-  And I wait for 3 sec
     Then I verify required fields for "user" oop
 
   @quote1
@@ -16,9 +14,10 @@ Feature: Quote OOP
     Given I open "quote" page oop
     When I fill out required fields for "user" oop
     When I fill out optional fields for "user" oop
-    And I submit the form oop
-    Then I verify required fields for "user" oop
-    Then I verify optional fields for "user" oop
+    And I wait for 3 sec
+    #And I submit the form oop
+    #Then I verify required fields for "user" oop
+    #Then I verify optional fields for "user" oop
   @quote3
   Scenario: Required fields test oop
     Given I open "quote" page oop
