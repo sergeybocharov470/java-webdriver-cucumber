@@ -62,6 +62,12 @@ public class QuoteForm {
     @FindBy(xpath = "//input[@name='phone']")
     private WebElement phone;
 
+    @FindBy(xpath = "//input[@name='gender']")
+    private List<WebElement> selectGender;
+
+    @FindBy(xpath = "//input[@name='allowedToContact']")
+    private WebElement isAllowedToContact;
+
 
 
     // constructor
@@ -112,7 +118,6 @@ public class QuoteForm {
                 carMake.click();
                 break;
             }
-
         }
     }
 
@@ -127,10 +132,29 @@ public class QuoteForm {
         //System.out.println(value.replaceAll("\\D+", ""));
     }
 
+    public void setGender (String genderInput) {
+        for (WebElement gender : selectGender) {
+            if (gender.getAttribute("value").equals(genderInput)) {
+                gender.click();
+            }
+        }
+    }
 
     public void submit() {
 
         submit.click();
     }
+
+    public void allowToContact(String allowance) {
+        if (allowance.toLowerCase().equals("yes") && !isAllowedToContact.isSelected()) {
+            isAllowedToContact.click();
+        }
+        else if (!allowance.toLowerCase().equals("yes") && isAllowedToContact.isSelected()) {
+            isAllowedToContact.click();
+        }
+    }
+
+
+
 
 }

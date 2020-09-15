@@ -71,10 +71,17 @@ public class Quote_oop {
         String make = dataFromFile(role, "car_make");
         String state = dataFromFile(role, "country");
         String phNumber = dataFromFile(role, "phone");
+        String genderInput = dataFromFile(role, "gender");
+        String allowance = dataFromFile(role, "allow_to_contact");
+
         myPage.selectCarMake(make);
         myPage.selectCountry(state);
         myPage.fillPhone(phNumber);
+        myPage.setGender(genderInput);
+        myPage.allowToContact(allowance);
+
         System.out.println("Car maker from file: " + make);
         System.out.println("Country of origin from file: " + state);
+        System.out.println("Gender from file: " + genderInput);
     }
 }
