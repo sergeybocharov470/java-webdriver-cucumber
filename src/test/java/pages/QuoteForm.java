@@ -1,7 +1,6 @@
 package pages;
 
 
-        import org.openqa.selenium.By;
         import org.openqa.selenium.WebElement;
         import org.openqa.selenium.support.FindBy;
         import org.openqa.selenium.support.PageFactory;
@@ -9,6 +8,7 @@ package pages;
 
         import java.util.List;
 
+        import static org.assertj.core.api.Assertions.assertThat;
         import static support.TestContext.getDriver;
 
 public class QuoteForm {
@@ -21,54 +21,75 @@ public class QuoteForm {
     // lazy instantiation technique
 
     @FindBy(xpath = "//input[@name='username']")
-    private WebElement username;
+    private WebElement usernameInput;
 
     @FindBy(name = "email")
-    private WebElement email;
+    private WebElement emailInput;
 
-    @FindBy(name = "password")
-    private WebElement password;
+    @FindBy(xpath = "//input[@id='password']")
+    private WebElement passwordInput;
 
     @FindBy(name = "confirmPassword")
     private WebElement confirmPassword;
 
     @FindBy(name = "name")
-    private WebElement name;
+    private WebElement nameInput;
 
     @FindBy(name = "firstName")
-    private WebElement firstName;
+    private WebElement firstNameInput;
 
     @FindBy(name = "lastName")
-    private WebElement lastName;
+    private WebElement lastNameInput;
 
     @FindBy(name = "middleName")
-    private WebElement middleName;
+    private WebElement middleNameInput;
 
     @FindBy(xpath = "//span[text()='Save']")
     private WebElement saveButton;
 
     @FindBy(name = "agreedToPrivacyPolicy")
-    private WebElement privacy;
+    private WebElement privacyInput;
 
     @FindBy(id = "formSubmit")
     private WebElement submit;
 
     @FindBy(xpath = "//select[@name='carMake']/option")
-    private List<WebElement> carMakers;
+    private List<WebElement> carMakersSelect;
 
     @FindBy(xpath = "//select[@name='countryOfOrigin']")
-    private WebElement countries;
+    private WebElement countriesInput;
 
     @FindBy(xpath = "//input[@name='phone']")
-    private WebElement phone;
+    private WebElement phoneInput;
 
     @FindBy(xpath = "//input[@name='gender']")
-    private List<WebElement> selectGender;
+    private List<WebElement> genderSelect;
 
     @FindBy(xpath = "//input[@name='allowedToContact']")
     private WebElement isAllowedToContact;
 
 
+
+
+
+    //error messages
+    @FindBy(xpath = "//label[@id='name-error']")
+    private WebElement nameErr;
+
+    @FindBy(xpath = "//label[@id='username-error']")
+    private WebElement usernameErr;
+
+    @FindBy(xpath = "//label[@id='password-error']")
+    private WebElement passwordErr;
+
+    @FindBy(xpath = "//label[@id='email-error']")
+    private WebElement emailErr;
+
+    @FindBy(xpath = "//label[@id='agreedToPrivacyPolicy-error']")
+    private WebElement agreeToPrivacyPolicyErr;
+
+    @FindBy(xpath = "//label[@id='confirmPassword-error']")
+    private WebElement confirmPasswordErr;
 
     // constructor
 
@@ -85,34 +106,34 @@ public class QuoteForm {
     }
 
     public void fillUsername(String value) {
-        username.sendKeys(value);
+        usernameInput.sendKeys(value);
     }
 
     public void fillEMail(String value) {
-        email.sendKeys(value);
+        emailInput.sendKeys(value);
     }
 
     public void fillBothPasswords(String value) {
-        password.sendKeys(value);
+        passwordInput.sendKeys(value);
         confirmPassword.sendKeys(value);
     }
 
     public void fillName(String firstNameValue, String middleNameValue, String lastNameValue) {
-        name.click();
-        firstName.sendKeys(firstNameValue);
-        middleName.sendKeys(middleNameValue);
-        lastName.sendKeys(lastNameValue);
+        nameInput.click();
+        firstNameInput.sendKeys(firstNameValue);
+        middleNameInput.sendKeys(middleNameValue);
+        lastNameInput.sendKeys(lastNameValue);
         saveButton.click();
     }
 
     public void agreeWithPrivacyPolicy() {
-        if (!privacy.isSelected()) {
-            privacy.click();
+        if (!privacyInput.isSelected()) {
+            privacyInput.click();
         }
     }
 
     public void selectCarMake(String make) {
-        for (WebElement carMake : carMakers) {
+        for (WebElement carMake : carMakersSelect) {
             //System.out.println(carMake.getText());
             if (carMake.getText().equals(make)) {
                 carMake.click();
@@ -123,17 +144,17 @@ public class QuoteForm {
 
 
     public void selectCountry(String state) {
-        Select country = new Select(countries);
+        Select country = new Select(countriesInput);
         country.selectByValue(state);
     }
 
     public void fillPhone (String value) {
-        phone.sendKeys(value.replaceAll("\\D+", ""));
+        phoneInput.sendKeys(value.replaceAll("\\D+", ""));
         //System.out.println(value.replaceAll("\\D+", ""));
     }
 
     public void setGender (String genderInput) {
-        for (WebElement gender : selectGender) {
+        for (WebElement gender : genderSelect) {
             if (gender.getAttribute("value").equals(genderInput)) {
                 gender.click();
             }
@@ -151,6 +172,65 @@ public class QuoteForm {
         }
         else if (!allowance.toLowerCase().equals("yes") && isAllowedToContact.isSelected()) {
             isAllowedToContact.click();
+        }
+    }
+
+
+    public String getErrorMessageText(String inputField) {
+        String myText = "";
+        switch (inputField) {
+            case "name" -> myText = nameErr.getText();
+            case "username" -> myText = usernameErr.getText();
+            case "password" -> myText = passwordErr.getText();
+            case "email" -> myText = emailErr.getText();
+            case "agreedToPrivacyPolicy" -> myText = agreeToPrivacyPolicyErr.getText();
+            case "confirmPassword" -> myText = confirmPasswordErr.getText();
+
+        }
+        return myText;
+    }
+
+    public boolean errorMessageExists(String inputField) {
+        //return false;
+        boolean myResult = false;
+        switch (inputField) {
+            case "username" -> myResult = usernameErr.isEnabled();
+            case "password" -> myResult = passwordErr.isEnabled();
+            case "email" -> myResult = emailErr.isEnabled();
+            //default -> return false;
+        }
+        return myResult;
+    }
+
+    public boolean errorMessageVisible(String inputField) {
+        boolean myResult = false;
+        switch (inputField) {
+            case "username" -> myResult = usernameErr.isDisplayed();
+            case "password" -> myResult = passwordErr.isDisplayed();
+            case "email" -> myResult = emailErr.isDisplayed();
+        }
+        return myResult;
+    }
+
+    public void printIntoInputField(String inputField, String inputValue) {
+        switch (inputField) {
+            //case "name" -> name.getText();
+            case "username" -> usernameInput.sendKeys(inputValue);
+            case "password" -> passwordInput.sendKeys(inputValue);
+            case "email" -> emailInput.sendKeys(inputValue);
+
+
+        }
+
+
+    }
+
+    public void deleteFromInputField(String inputField) {
+        switch (inputField) {
+            //case "name" -> name.getText();
+            case "username" -> usernameInput.clear();
+            case "password" -> passwordInput.clear();
+            case "email" -> emailInput.clear();
         }
     }
 

@@ -6,16 +6,16 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import pages.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+//import static pages.QuoteForm.errorMessageExists;
 import static support.TestContext.getDataFromYmlFile;
 
 public class Quote_oop {
 
-    QuoteForm myPage = new QuoteForm();
-    QuoteResult myResult = new QuoteResult();
+    QuoteForm quotePage = new QuoteForm();
+    QuoteResult resultPage = new QuoteResult();
 
     private String dataFromFile(String fileName, String key) {
         Map<String, String> returnData = getDataFromYmlFile(fileName);
@@ -28,7 +28,7 @@ public class Quote_oop {
     public void iOpenPageOop(String pageToOpen) {
 
         if (pageToOpen.equals("quote")) {
-            myPage.open();
+            quotePage.open();
         } else {
             System.out.println(pageToOpen + " does not implemented yet");
         }
@@ -38,11 +38,11 @@ public class Quote_oop {
     @When("I fill out required fields for {string} oop")
     public void iFillOutRequiredFieldsForOop(String role) {
 
-        myPage.fillUsername(dataFromFile(role, "username"));
-        myPage.fillName(dataFromFile(role, "firstname"), dataFromFile(role, "middlename"), dataFromFile(role, "lastname"));
-        myPage.fillBothPasswords(dataFromFile(role, "password"));
-        myPage.fillEMail(dataFromFile(role, "email"));
-        myPage.agreeWithPrivacyPolicy();
+        quotePage.fillUsername(dataFromFile(role, "username"));
+        quotePage.fillName(dataFromFile(role, "firstname"), dataFromFile(role, "middlename"), dataFromFile(role, "lastname"));
+        quotePage.fillBothPasswords(dataFromFile(role, "password"));
+        quotePage.fillEMail(dataFromFile(role, "email"));
+        quotePage.agreeWithPrivacyPolicy();
 
         //System.out.println(dataFromFile(role,"username"));
 
@@ -51,18 +51,18 @@ public class Quote_oop {
 
     @And("I submit the form oop")
     public void iSubmitTheFormOop() {
-        myPage.submit();
+        quotePage.submit();
     }
 
     @Then("I verify required fields for {string} oop")
     public void iVerifyRequiredFieldsForOop(String role) {
-        assertThat(myResult.getFirstName()).isEqualTo(dataFromFile(role, "firstname"));
-        assertThat(myResult.getLastName()).isEqualTo(dataFromFile(role, "lastname"));
-        assertThat(myResult.getMiddleName()).isEqualTo(dataFromFile(role, "middlename"));
-        assertThat(myResult.getUserName()).isEqualTo(dataFromFile(role, "username"));
-        assertThat(myResult.getPassword()).contains("entered");
-        assertThat(myResult.getEMail()).isEqualTo(dataFromFile(role, "email"));
-        assertThat(myResult.getPrivacyPolicy()).isTrue();
+        assertThat(resultPage.getFirstName()).isEqualTo(dataFromFile(role, "firstname"));
+        assertThat(resultPage.getLastName()).isEqualTo(dataFromFile(role, "lastname"));
+        assertThat(resultPage.getMiddleName()).isEqualTo(dataFromFile(role, "middlename"));
+        assertThat(resultPage.getUserName()).isEqualTo(dataFromFile(role, "username"));
+        assertThat(resultPage.getPassword()).contains("entered");
+        assertThat(resultPage.getEMail()).isEqualTo(dataFromFile(role, "email"));
+        assertThat(resultPage.getPrivacyPolicy()).isTrue();
     }
 
 
@@ -74,14 +74,40 @@ public class Quote_oop {
         String genderInput = dataFromFile(role, "gender");
         String allowance = dataFromFile(role, "allow_to_contact");
 
-        myPage.selectCarMake(make);
-        myPage.selectCountry(state);
-        myPage.fillPhone(phNumber);
-        myPage.setGender(genderInput);
-        myPage.allowToContact(allowance);
+        quotePage.selectCarMake(make);
+        quotePage.selectCountry(state);
+        quotePage.fillPhone(phNumber);
+        quotePage.setGender(genderInput);
+        quotePage.allowToContact(allowance);
 
         System.out.println("Car maker from file: " + make);
         System.out.println("Country of origin from file: " + state);
         System.out.println("Gender from file: " + genderInput);
     }
+
+    @Then("I see {string} error message {string}")
+    public void iSeeErrorMessage(String inputField, String errorMessageValue) {
+        assertThat(quotePage.getErrorMessageText(inputField)).isEqualTo(errorMessageValue);
+    }
+
+    @When("I fill out {string} field with {string}")
+    public void iFillOutFieldWith(String inputField, String inputValue) {
+        quotePage.deleteFromInputField(inputField);
+        quotePage.printIntoInputField(inputField, inputValue);
+    }
+
+    @Then("I don't see {string} error message")
+    public boolean iDonTSeeErrorMessage(String inputField) {
+        if (quotePage.errorMessageExists(inputField)) {
+            return false;
+        }
+        //else if (quotePage.errorMessageExists(inputField)  && !quotePage.errorMessageVisible(inputField)) {
+        //    return true;
+        //}
+        else {
+            return true;
+        }
+    }
+
+
 }

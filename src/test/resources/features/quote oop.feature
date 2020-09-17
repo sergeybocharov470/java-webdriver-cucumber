@@ -18,6 +18,7 @@ Feature: Quote OOP
     #And I submit the form oop
     #Then I verify required fields for "user" oop
     #Then I verify optional fields for "user" oop
+
   @quote3
   Scenario: Required fields test oop
     Given I open "quote" page oop
@@ -27,14 +28,18 @@ Feature: Quote OOP
     And I see "password" error message "This field is required."
     And I see "name" error message "This field is required."
     And I see "agreedToPrivacyPolicy" error message "- Must check!"
+
   @quote4
   Scenario: Market username test oop
     Given I open "quote" page oop
     When I fill out "username" field with "a"
     And I submit the form oop
     Then I see "username" error message "Please enter at least 2 characters."
-    When I fill out "username" field with "ab"
+    #And I wait for 2 sec
+    When I fill out "username" field with "b"
+    #And I wait for 2 sec
     Then I don't see "username" error message
+
   @quote5
   Scenario: Market email test oop
     Given I open "quote" page oop
@@ -54,6 +59,7 @@ Feature: Quote OOP
     When I fill out "confirmPassword" field with "1234"
     And I submit the form oop
     Then I see "confirmPassword" error message "Please enter at least 5 characters."
+    # there should be a fork for conditional usage of two different messages in the step above
     When I fill out "confirmPassword" field with "54321"
     Then I see "confirmPassword" error message "Passwords do not match!"
     When I fill out "confirmPassword" field with "12345"
@@ -64,4 +70,15 @@ Feature: Quote OOP
     When I fill out name field with first name "John" and last name "Doe"
     Then I verify "name" field value "John Doe"
     When I fill out name field with first name "John", middle name "Richard", last name "Doe"
+    Then I verify "name" field value "John Richard Doe"
+
+  @quote7A
+  Scenario: Market name test oop
+    Given I open "quote" page oop
+    When I fill out "name" field with "John"
+    And  I fill out "name" field with "Doe"
+    Then I verify "name" field value "John Doe"
+    When I fill out "name" field with "John"
+    And  I fill out "name" field with "Richard"
+    And  I fill out "name" field with "Doe"
     Then I verify "name" field value "John Richard Doe"
