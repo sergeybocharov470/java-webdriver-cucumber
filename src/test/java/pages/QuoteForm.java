@@ -1,15 +1,19 @@
 package pages;
 
 
+        import org.openqa.selenium.NoSuchElementException;
         import org.openqa.selenium.WebElement;
         import org.openqa.selenium.support.FindBy;
         import org.openqa.selenium.support.PageFactory;
+        import org.openqa.selenium.support.ui.ExpectedConditions;
         import org.openqa.selenium.support.ui.Select;
 
         import java.util.List;
 
         import static org.assertj.core.api.Assertions.assertThat;
         import static support.TestContext.getDriver;
+        import static support.TestContext.getWait;
+// import pages.QuoteResult;
 
 public class QuoteForm {
 
@@ -32,16 +36,16 @@ public class QuoteForm {
     @FindBy(name = "confirmPassword")
     private WebElement confirmPassword;
 
-    @FindBy(name = "name")
+    @FindBy(xpath = "//input[@id='name']")
     private WebElement nameInput;
 
-    @FindBy(name = "firstName")
+    @FindBy(xpath = "//input[@id='firstName']")
     private WebElement firstNameInput;
 
-    @FindBy(name = "lastName")
+    @FindBy(xpath = "//input[@id='lastName']")
     private WebElement lastNameInput;
 
-    @FindBy(name = "middleName")
+    @FindBy(xpath = "//input[@id='middleName']")
     private WebElement middleNameInput;
 
     @FindBy(xpath = "//span[text()='Save']")
@@ -120,11 +124,21 @@ public class QuoteForm {
 
     public void fillName(String firstNameValue, String middleNameValue, String lastNameValue) {
         nameInput.click();
+        getWait(2).until(ExpectedConditions.elementToBeClickable(firstNameInput));
         firstNameInput.sendKeys(firstNameValue);
         middleNameInput.sendKeys(middleNameValue);
         lastNameInput.sendKeys(lastNameValue);
         saveButton.click();
     }
+
+    public void fillName(String firstNameValue, String lastNameValue) {
+        nameInput.click();
+        firstNameInput.sendKeys(firstNameValue);
+        lastNameInput.sendKeys(lastNameValue);
+        saveButton.click();
+    }
+
+
 
     public void agreeWithPrivacyPolicy() {
         if (!privacyInput.isSelected()) {
@@ -175,65 +189,60 @@ public class QuoteForm {
         }
     }
 
-
-    public String getErrorMessageText(String inputField) {
-        String myText = "";
+    public WebElement getErrorLabel(String inputField) {
+        WebElement selectedErrorLabel = null;
         switch (inputField) {
-            case "name" -> myText = nameErr.getText();
-            case "username" -> myText = usernameErr.getText();
-            case "password" -> myText = passwordErr.getText();
-            case "email" -> myText = emailErr.getText();
-            case "agreedToPrivacyPolicy" -> myText = agreeToPrivacyPolicyErr.getText();
-            case "confirmPassword" -> myText = confirmPasswordErr.getText();
-
+            //case "name" -> name.getText();
+            case "username" -> selectedErrorLabel = usernameErr;
+            case "password" -> selectedErrorLabel = passwordErr;
+            case "email" -> selectedErrorLabel = emailErr;
+            case "confirmPassword" -> selectedErrorLabel = confirmPasswordErr;
+            case "agreedToPrivacyPolicy" -> selectedErrorLabel = agreeToPrivacyPolicyErr;
+            case "name" -> selectedErrorLabel = nameErr;
         }
-        return myText;
+        return selectedErrorLabel;
     }
 
-    public boolean errorMessageExists(String inputField) {
-        //return false;
-        boolean myResult = false;
-        switch (inputField) {
-            case "username" -> myResult = usernameErr.isEnabled();
-            case "password" -> myResult = passwordErr.isEnabled();
-            case "email" -> myResult = emailErr.isEnabled();
-            //default -> return false;
-        }
-        return myResult;
+    public String getErrorMessageText(String inputField) {
+        return getErrorLabel(inputField).getText();
     }
 
     public boolean errorMessageVisible(String inputField) {
-        boolean myResult = false;
-        switch (inputField) {
-            case "username" -> myResult = usernameErr.isDisplayed();
-            case "password" -> myResult = passwordErr.isDisplayed();
-            case "email" -> myResult = emailErr.isDisplayed();
+        //implemented using code pattern given by Slava at Day14
+        boolean myResult;
+        try {
+            myResult = getErrorLabel(inputField).isDisplayed();
+        } catch (NoSuchElementException e) {
+            myResult = false;
         }
         return myResult;
+
+    }
+//////////////////////////////////////////////////////////////////
+    public WebElement getInputField(String inputField) {
+        WebElement selectedInputField = null;
+        switch (inputField) {
+            //case "name" -> name.getText();
+            case "username" -> selectedInputField = usernameInput;
+            case "password" -> selectedInputField = passwordInput;
+            case "email" -> selectedInputField = emailInput;
+            case "confirmPassword" -> selectedInputField = confirmPassword;
+        }
+        return selectedInputField;
     }
 
     public void printIntoInputField(String inputField, String inputValue) {
-        switch (inputField) {
-            //case "name" -> name.getText();
-            case "username" -> usernameInput.sendKeys(inputValue);
-            case "password" -> passwordInput.sendKeys(inputValue);
-            case "email" -> emailInput.sendKeys(inputValue);
-
-
-        }
-
-
+            getInputField(inputField).sendKeys(inputValue);
     }
+
 
     public void deleteFromInputField(String inputField) {
-        switch (inputField) {
-            //case "name" -> name.getText();
-            case "username" -> usernameInput.clear();
-            case "password" -> passwordInput.clear();
-            case "email" -> emailInput.clear();
-        }
+                getInputField(inputField).clear();
     }
 
+    public String getName() {
+        return nameInput.getAttribute("value");
+     }
 
 
 

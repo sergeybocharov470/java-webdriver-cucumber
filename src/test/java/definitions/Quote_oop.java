@@ -97,8 +97,10 @@ public class Quote_oop {
     }
 
     @Then("I don't see {string} error message")
-    public boolean iDonTSeeErrorMessage(String inputField) {
-        if (quotePage.errorMessageExists(inputField)) {
+    public void iDonTSeeErrorMessage(String inputField) {
+        assertThat(quotePage.errorMessageVisible(inputField)).isFalse();
+        /*
+        if (quotePage.errorMessageVisible(inputField)) {
             return false;
         }
         //else if (quotePage.errorMessageExists(inputField)  && !quotePage.errorMessageVisible(inputField)) {
@@ -106,8 +108,23 @@ public class Quote_oop {
         //}
         else {
             return true;
-        }
+        }*/
     }
 
 
+    @When("I fill out name field with first name {string} and last name {string}")
+    public void iFillOutNameFieldWithFirstNameAndLastName(String nameToPrint, String lastNameToPrint) {
+        quotePage.fillName(nameToPrint, lastNameToPrint);
+    }
+
+
+    @When("I fill out name field with first name {string}, middle name {string}, last name {string}")
+    public void iFillOutNameFieldWithFirstNameMiddleNameLastName(String nameToPrint, String middleNameToPrint, String lastNameToPrint) {
+        quotePage.fillName(nameToPrint, middleNameToPrint, lastNameToPrint);
+    }
+
+    @Then("I verify {string} field value {string}")
+    public void iVerifyFieldValue(String inputField, String value) {
+        assertThat(quotePage.getName()).isEqualTo(value);
+    }
 }
