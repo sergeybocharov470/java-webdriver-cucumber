@@ -48,11 +48,14 @@ public class UPS_Shipment extends UPS_Main {
     @FindBy (xpath = "//input[@id='origincity']")
     private WebElement senderCity;
 
-    @FindBy (xpath = "//span[@class='button-spinner']")
-    private WebElement buttonSpinner;
+    //@FindBy (xpath = "//span[@class='button-spinner']")
+    //private WebElement buttonSpinner;
 
-    @FindBy (xpath = "//iframe[@src='javascript:void(0)']")
-    private WebElement iFrame;
+    //@FindBy (xpath = "//iframe[@src='javascript:void(0)']")
+    //private WebElement iFrame;
+
+    @FindBy (xpath = "//div[@class='ups-group ups-group_condensed']")
+    private WebElement senderToVerify;
 
 
     /////////////////
@@ -96,14 +99,16 @@ public class UPS_Shipment extends UPS_Main {
         return continueButton;
     }
 
-    public WebElement getButtonSpinner() {
+    /*public WebElement getButtonSpinner() {
         return buttonSpinner;
-    }
+    } */
 
     public WebElement getSenderCity() {return senderCity;}
 
+    public String getSenderToVerifyText() {return senderToVerify.getText();}
 
 
+/*
     public void switchToIFrame() {
         getDriver().switchTo().frame(iFrame);
     }
@@ -116,6 +121,6 @@ public class UPS_Shipment extends UPS_Main {
         WebDriverWait mySpinner = new WebDriverWait(getDriver(),3);
         mySpinner.until(ExpectedConditions.invisibilityOf(getButtonSpinner()));
     }
-
+*/
 
 }  // end of class

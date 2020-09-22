@@ -34,7 +34,6 @@ public class UPS_Main {
         shippingMenu.click();
     }
 
-
     public void selectCreateAShipment() {
         createAShipmentOption.click();
     }

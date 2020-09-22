@@ -11,6 +11,7 @@ import pages.UPS_Shipment;
 
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.openqa.selenium.Keys.DOWN;
 import static support.TestContext.*;
 
@@ -50,10 +51,9 @@ public class Ups_oop {
 
     @When("I fill out origin shipment fields oop")
     public void iFillOutOriginShipmentFieldsOop() throws InterruptedException {
-        //String country = dataFromFile("country");
         UPS_Shipment shipping = new UPS_Shipment();
-        getWait(8).until(ExpectedConditions.visibilityOf(shipping.getWhereAreYouShippingFromLabel()));
-        Thread.sleep(3000);
+        getWait().until(ExpectedConditions.visibilityOf(shipping.getWhereAreYouShippingFromLabel()));
+        //Thread.sleep(3000);
         upsShipmentPage.setCountry(dataFromFile("country"));
         upsShipmentPage.setSenderName(dataFromFile("sender_name"));
         upsShipmentPage.setSenderAddress(dataFromFile("sender_address"));
@@ -77,7 +77,7 @@ public class Ups_oop {
     public void iVerifyOriginShipmentFieldsSubmittedOop() {
         UPS_Shipment shipping = new UPS_Shipment();
         getWait().until(ExpectedConditions.visibilityOf(shipping.getShipFromLabel()));
-
+        assertThat(upsShipmentPage.getSenderToVerifyText().contains("Doe")).isTrue();
 
     }
 }  // end of class
