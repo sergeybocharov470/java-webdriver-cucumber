@@ -12,6 +12,7 @@ import pages.UPS_Shipment;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.openqa.selenium.Keys.DOWN;
 import static support.TestContext.*;
 
@@ -77,7 +78,33 @@ public class Ups_oop {
     public void iVerifyOriginShipmentFieldsSubmittedOop() {
         UPS_Shipment shipping = new UPS_Shipment();
         getWait().until(ExpectedConditions.visibilityOf(shipping.getShipFromLabel()));
-        assertThat(upsShipmentPage.getSenderToVerifyText().contains("Doe")).isTrue();
+        assertThat(upsShipmentPage.getSenderToVerifyText().contains(dataFromFile("sender_name"))).isTrue();  //use data from *.yml file
+        assertThat(upsShipmentPage.getSenderToVerifyText().contains(dataFromFile("sender_address"))).isTrue();
+        assertThat(upsShipmentPage.getSenderToVerifyText().contains(dataFromFile("sender_zip"))).isTrue();
+        assertThat(upsShipmentPage.getSenderToVerifyText().contains(dataFromFile("sender_email"))).isTrue();
+        assertThat(upsShipmentPage.getSenderToVerifyText().contains(dataFromFile("sender_phone"))).isTrue();
+    }
 
+    @And("I cancel the shipment form oop")
+    public void iCancelTheShipmentFormOop() {
+        UPS_Shipment shipping = new UPS_Shipment();
+        shipping.getContinueButton().sendKeys(DOWN);
+        upsShipmentPage.clickCancelButton();
+        upsShipmentPage.warningAccept();
+    }
+
+
+    @Then("I verify shipment form is reset oop")
+    public void iVerifyShipmentFormIsResetOop() {
+
+        UPS_Shipment shipping = new UPS_Shipment();
+        assertThat(ExpectedConditions.invisibilityOf(shipping.getShipFromLabel()));
+        assertThat(shipping.getSenderName().getAttribute("value")).isEqualTo("");
+        assertThat(shipping.getSenderPhone().getAttribute("value")).isEqualTo("");
+        assertThat(shipping.getSenderEmail().getAttribute("value")).isEqualTo("");
+        assertThat(shipping.getSenderAddress().getAttribute("value")).isEqualTo("");
+        assertThat(shipping.getSenderCity().getAttribute("value")).isEqualTo("");
+
+        System.out.println("My result " + shipping.getSenderEmail().getAttribute("value"));
     }
 }  // end of class

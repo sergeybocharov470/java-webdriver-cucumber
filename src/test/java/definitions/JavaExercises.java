@@ -717,8 +717,34 @@ public class JavaExercises {
     }
 
 
-   
+    @Given("I print evens and odds")
+    public void iPrintEvensAndOdds() {
 
 
+            /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution. */
+            int j = 3;
+            while (j > 0) {
+                Scanner scanner = new Scanner (System.in);
+                String s = scanner.next();
 
+                String evens = "";
+                String odds = "";
+                for (int i =0; i<s.length()-1; i++) {
+
+                    if (i%2==0) {
+                        evens = evens + s.substring(i+1,i+2);
+
+                    }
+                    else {
+                        odds = odds + s.substring(i+1,i+2);
+                    }
+
+                }
+                System.out.println(evens + " " + odds);
+                System.out.println(s);
+                //scanner.close();
+                j--;
+            }
+
+    }
 }

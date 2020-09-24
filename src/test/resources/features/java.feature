@@ -229,6 +229,9 @@
   #implemented 20200913
     Given I return all natural numbers between "0" and "3"
 
+  Scenario: char array
+    Given I print evens and odds
+
 
 
 #@assesment

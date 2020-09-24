@@ -151,3 +151,15 @@ Scenario: Wrong store id does not match
       And I reserve new PO box for "94022"     #overlay  //div[@id='modal-box_overlay-progress_2']
       #Then I verify that "Los Altos — Post Office™" in "office" exists
       #And I verify that "Size 5-XL PO Box availability" in "Los Altos — Post Office™" exists
+
+
+@Day15
+#Finish implement usps scenario below:
+    @usps7
+    Scenario: Calculate price oop
+      Given I open "usps" page  oop
+      When I go to Calculate Price Page oop
+      And I select "Canada" with "Postcard" shape oop
+      And I wait for 3 sec
+      And I define "2" quantity oop
+      Then I calculate the price and validate cost is "$2.40" oop

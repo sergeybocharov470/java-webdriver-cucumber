@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -12,7 +13,7 @@ import static support.TestContext.getDriver;
 public class UPS_Shipment extends UPS_Main {
 
     public UPS_Shipment() {
-        PageFactory.initElements(getDriver(), this);
+       // PageFactory.initElements(getDriver(), this);
         url = "https://www.ups.com/us/en/Home.page";
     }
 
@@ -44,6 +45,12 @@ public class UPS_Shipment extends UPS_Main {
 
     @FindBy (xpath = "//button[text()='Continue']")
     private WebElement continueButton;
+
+    @FindBy (xpath = "//button[@id='nbsBackForwardNavigationCancelShipmentButton']")
+    private WebElement cancelButton;
+
+    @FindBy (xpath ="//button[@id='nbsCancelShipmentWarningYes']")
+    private WebElement cancelWarningButton;
 
     @FindBy (xpath = "//input[@id='origincity']")
     private WebElement senderCity;
@@ -103,24 +110,25 @@ public class UPS_Shipment extends UPS_Main {
         return buttonSpinner;
     } */
 
+    public WebElement getSenderEmail() {return senderEmail;}
+
+    public WebElement getSenderPhone() {return senderPhone;}
+
+    public WebElement getSenderName() {return senderName;}
+
     public WebElement getSenderCity() {return senderCity;}
+
+    public WebElement getSenderAddress() {return senderAddress;}
 
     public String getSenderToVerifyText() {return senderToVerify.getText();}
 
-
-/*
-    public void switchToIFrame() {
-        getDriver().switchTo().frame(iFrame);
+    public void clickCancelButton() {
+        cancelButton.click();
     }
 
-    public void switchToDefaultContent() {
-        getDriver().switchTo().defaultContent();
+    public void warningAccept() {
+        cancelWarningButton.click();
     }
 
-    public void waitForSpinnerInvisibility() {
-        WebDriverWait mySpinner = new WebDriverWait(getDriver(),3);
-        mySpinner.until(ExpectedConditions.invisibilityOf(getButtonSpinner()));
-    }
-*/
 
 }  // end of class
