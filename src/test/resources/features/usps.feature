@@ -160,6 +160,6 @@ Scenario: Wrong store id does not match
       Given I open "usps" page  oop
       When I go to Calculate Price Page oop
       And I select "Canada" with "Postcard" shape oop
-      And I wait for 3 sec
       And I define "2" quantity oop
+      And I wait for 3 sec
       Then I calculate the price and validate cost is "$2.40" oop

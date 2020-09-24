@@ -6,6 +6,7 @@ import cucumber.api.java.en.When;
 import pages.PostalPriceCalculator;
 import pages.UspsHeader;
 import pages.UspsHome;
+import pages.UspsPage;
 
 public class UspsStepsDefOop {
 
@@ -33,5 +34,11 @@ public class UspsStepsDefOop {
         new PostalPriceCalculator().selectPostalShape(postalShape);
 
 
+    }
+
+    @And("I define {string} quantity oop")
+    public void iDefineQuantityOop(String quantity) {
+        new PostalPriceCalculator().inputQuantityOfItems(quantity);
+        new PostalPriceCalculator().clickCalculateButton();
     }
 }   // end of UspsStepsDefOop class

@@ -12,6 +12,12 @@ public class PostalPriceCalculator extends UspsHeader {
     @FindBy (xpath = "//input[@value='Postcard']")
     private WebElement postcard;
 
+    @FindBy (xpath = "//input[@placeholder='Quantity']")
+    WebElement QuantityOfItems;
+
+    @FindBy (xpath = "//input[@value='Calculate']")
+    WebElement calculateButton;
+
 
 
     public void selectDestinationCountry(String country) {
@@ -26,5 +32,13 @@ public class PostalPriceCalculator extends UspsHeader {
         }
     }
 
+    public void inputQuantityOfItems (String quantity) {
+        QuantityOfItems.sendKeys(quantity);
+
+    }
+
+    public void clickCalculateButton() {
+        calculateButton.click();
+    }
 
 }  // end of PostalPriceCalculator class
