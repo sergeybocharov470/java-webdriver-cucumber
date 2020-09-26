@@ -2,11 +2,14 @@ package definitions;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import pages.PostalPriceCalculator;
+import pages.UspsPostalPriceCalculator;
 import pages.UspsHeader;
 import pages.UspsHome;
-import pages.UspsPage;
+import pages.UspsPostalPriceCalculatorResult;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class UspsStepsDefOop {
 
@@ -30,15 +33,21 @@ public class UspsStepsDefOop {
     @And("I select {string} with {string} shape oop")
     public void iSelectWithShapeOop(String country, String postalShape) {
 
-        new PostalPriceCalculator().selectDestinationCountry(country);
-        new PostalPriceCalculator().selectPostalShape(postalShape);
+        new UspsPostalPriceCalculator().selectDestinationCountry(country);
+        new UspsPostalPriceCalculator().selectPostalShape(postalShape);
 
 
     }
 
     @And("I define {string} quantity oop")
     public void iDefineQuantityOop(String quantity) {
-        new PostalPriceCalculator().inputQuantityOfItems(quantity);
-        new PostalPriceCalculator().clickCalculateButton();
+        new UspsPostalPriceCalculatorResult().inputQuantityOfItems(quantity);
+
+    }
+
+    @Then("I calculate the price and validate cost is {string} oop")
+    public void iCalculateThePriceAndValidateCostIsOop(String totalSum) {
+        new UspsPostalPriceCalculatorResult().clickCalculateButton();
+        assertThat(new UspsPostalPriceCalculatorResult().getTotal().equals(totalSum)).isTrue();
     }
 }   // end of UspsStepsDefOop class

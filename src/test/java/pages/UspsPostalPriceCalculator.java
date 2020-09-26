@@ -4,7 +4,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
-public class PostalPriceCalculator extends UspsHeader {
+public class UspsPostalPriceCalculator extends UspsHeader {
 
     @FindBy (xpath = "//select[@id='CountryID']" )
     private WebElement destinationCountry;
@@ -12,11 +12,7 @@ public class PostalPriceCalculator extends UspsHeader {
     @FindBy (xpath = "//input[@value='Postcard']")
     private WebElement postcard;
 
-    @FindBy (xpath = "//input[@placeholder='Quantity']")
-    WebElement QuantityOfItems;
 
-    @FindBy (xpath = "//input[@value='Calculate']")
-    WebElement calculateButton;
 
 
 
@@ -32,13 +28,5 @@ public class PostalPriceCalculator extends UspsHeader {
         }
     }
 
-    public void inputQuantityOfItems (String quantity) {
-        QuantityOfItems.sendKeys(quantity);
-
-    }
-
-    public void clickCalculateButton() {
-        calculateButton.click();
-    }
 
 }  // end of PostalPriceCalculator class
