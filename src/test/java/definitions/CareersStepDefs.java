@@ -10,7 +10,7 @@ import pages.CareersRecruit;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static support.TestContext.getData;
+import static support.TestContext.getDataFromYmlFile;
 
 public class CareersStepDefs {
     // xpath axes
@@ -25,12 +25,12 @@ public class CareersStepDefs {
     public void iLoginAs(String role) {
         new CareersLanding()
                 .clickLogin()
-                .login(getData(role));
+                .login(getDataFromYmlFile(role));
     }
 
     @Then("I verify {string} login")
     public void iVerifyLogin(String role) {
-        String expectedName = getData(role).get("name");
+        String expectedName = getDataFromYmlFile(role).get("name");
         String actualName = new CareersLanding().getLoggedUserName();
         assertThat(actualName).isEqualTo(expectedName);
     }

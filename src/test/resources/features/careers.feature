@@ -2,7 +2,7 @@ Feature: Skryabin careeers Heroku
 
 @careers1
   Scenario: Recruiter removes position
-    Given I navigate to "careers" page oop
+    Given I open "careers" page
     And I login as "recruiter"
     Then I verify "recruiter" login
     When I remove "Principal Automation Engineer" position
