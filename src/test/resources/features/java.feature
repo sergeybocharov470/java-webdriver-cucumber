@@ -232,6 +232,10 @@
   Scenario: char array
     Given I print evens and odds
 
+@Day16
+  Scenario: maps and lists
+    Given I update map
+
 
 
 #@assesment

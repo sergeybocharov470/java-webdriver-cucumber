@@ -747,4 +747,37 @@ public class JavaExercises {
             }
 
     }
-}
+
+    @Given("I update map")
+    public void iUpdateMap() {
+        Map<String, String> phoneBook = new HashMap<>();
+        List<String> person = new ArrayList<>();
+
+        phoneBook.put("peter", "3231741899");
+        phoneBook.put("mike", "5871741890");
+        phoneBook.put("john", "1471741894");
+        phoneBook.put("tom", "1831741891");
+
+        person.add("peter");
+        person.add("john");
+        person.add("tom");
+        person.add("andy");
+
+        System.out.println(phoneBook.get("peter"));
+        System.out.println(person.get(2));
+
+      //  phoneBook.
+
+
+        for (int i = 0; i < person.size(); i++) {
+            if (phoneBook.containsKey(person.get(i))) {
+                //phoneBook.put(person.get(i),phoneBook.)
+
+            }
+
+
+            System.out.println(phoneBook);
+
+        }
+    }
+} //end of class

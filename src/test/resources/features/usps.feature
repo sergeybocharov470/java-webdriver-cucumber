@@ -153,12 +153,25 @@ Scenario: Wrong store id does not match
       #And I verify that "Size 5-XL PO Box availability" in "Los Altos — Post Office™" exists
 
 
-@Day15
-#Finish implement usps scenario below:
-    @usps7
+@Day15 @usps7
     Scenario: Calculate price oop
+    #implemented 20200925
       Given I open "usps" page  oop
       When I go to Calculate Price Page oop
       And I select "Canada" with "Postcard" shape oop
       And I define "2" quantity oop
       Then I calculate the price and validate cost is "$2.40" oop
+
+
+@Day16, @usps5
+    Scenario: Verify color oop
+      Given I open "usps" page  oop
+      When I go to Postal Store tab and Stamps item oop
+      And I wait for 2 sec
+      When I choose "unselect" "Category" "Stamps" filter "checkbox" oop
+      And I choose "select" "Stamp Shape" "Vertical" filter "checkbox" oop
+      And I choose "select" "Color" "Blue" filter "checkbox" oop
+      Then I verify "Blue" filter "set" oop
+      And I verify "Vertical" filter "set" oop
+      Then I verify 12 items found in "resultset" oop
+      And I verify that items below 12 dollars exists in "resultset" oop

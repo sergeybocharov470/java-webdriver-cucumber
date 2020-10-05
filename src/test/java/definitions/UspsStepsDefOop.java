@@ -50,4 +50,13 @@ public class UspsStepsDefOop {
         new UspsPostalPriceCalculatorResult().clickCalculateButton();
         assertThat(new UspsPostalPriceCalculatorResult().getTotal().equals(totalSum)).isTrue();
     }
+
+    @When("I go to Postal Store tab and Stamps item oop")
+    public void iGoToPostalStoreTabAndStampsItemOop() {
+        {
+            new UspsHeader().goToPostalStore();
+            new UspsHeader().clickStampsOption();
+        }
+
+    }
 }   // end of UspsStepsDefOop class
