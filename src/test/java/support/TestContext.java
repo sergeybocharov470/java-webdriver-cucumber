@@ -69,7 +69,7 @@ public class TestContext {
         return driver;
     }
 	//added 20201018 Day20
-    public static Map<String, String> getPosition(String title) {
+    public static Map<String, String> getPositionFromFile(String title) {
         Map<String, String> position = getDataFromYmlFile(title);
         String timestampedTitle = position.get("title");
         if (timestampedTitle != null) {
@@ -93,10 +93,11 @@ public class TestContext {
         String path = System.getProperty("user.dir") + "/src/test/resources/data/" + fileName + "." + extension;
         return new File(path);
     }
-
+// saving data from source to file using stream. If I have a byteArray variable I can save it into file of a given name.extention
     public static void saveFile(String fileName, String extension, byte[] byteArray) {
-        try(FileOutputStream stream = new FileOutputStream(getFile(fileName, extension))) {
-            stream.write(byteArray);
+        try(FileOutputStream stream = new FileOutputStream(getFile(fileName, extension))) //definition of object which a file name.extention must be transformed to
+        {
+            stream.write(byteArray); //apply 'write' method to previosly defined object
             stream.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -111,7 +112,7 @@ public class TestContext {
         }
     }
 
-    public static Map<String, String> getCandidate(String title) {
+    public static Map<String, String> getCandidateFromFile(String title) {
         Map<String, String> candidate = getCandidateData(title);
         String email = candidate.get("email");
         if (email != null) {
@@ -127,8 +128,21 @@ public class TestContext {
         return list.get(title);
     }
 
+    // video  Day 21, 43:00:00 ->
     public static Config getConfig() {
-        return new Yaml().loadAs(getStream("config", "yml"), Config.class);
+        return new Yaml().load(getStream("config", "yml"));
+    }
+
+    public static Users getUsers() {
+        return new Yaml().loadAs(getStream("users", "yml"), Users.class);
+    }
+
+    public Map<String, String> getUser(String type) {
+        switch (type) {
+            case "admin" : return getUsers().admin;
+            case "user" : return getUsers().user;
+        }
+        throw new RuntimeException("no such a usertype found: " + type);
     }
 
     public static Map<String, String> getDataFromYmlFile(String fileName) {

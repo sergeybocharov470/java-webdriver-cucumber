@@ -9,7 +9,8 @@ import org.openqa.selenium.TakesScreenshot;
 import java.util.concurrent.TimeUnit;
 
 import static support.TestContext.getDriver;
-import static support.TestContext.getConfig;											
+import static support.TestContext.getConfig;
+import static support.TestContext.getUsers;
 
 public class Hooks {
 

@@ -25,6 +25,8 @@
       Given I login via REST as "recruiter"
       When I create via REST "sdet" candidate
       Then I verify via REST new "sdet" candidate is in the list
+      When I add via REST "txt" resume to a new candidate
+      Then I verify via REST that "txt" resume has been added
       When I update via REST "sdet" candidate
       Then I verify via REST new "sdet" candidate is updated
       When I delete via REST new candidate
@@ -35,9 +37,10 @@
     @careers2
     Scenario: Recruiter creates position
       Given I open "careers" page
+      #necessary to intercept and save to a variable token during login or its verification(?)
       And I login as "recruiter"
       Then I verify "recruiter" login
-      When I create new position
+      When I create new "analyst" position
       Then I verify new position is created
       When I remove new position
       And I verify new position is removed

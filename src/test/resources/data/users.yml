@@ -1,0 +1,11 @@
+!! support Users
+
+admin:
+  username: jdoe
+  password: welcome
+user:
+  username: rroe
+  password: "12345"
+supervisor:
+  username: gagarin
+  password: "qwe123"

@@ -75,7 +75,7 @@ public class  RestClient {
                 .jsonPath()         //parse as a json
                 .getMap("");    //creates a map
 
-        setTestData("newPosition", result); //saves resulted map to the 'testData' variable
+        setTestData("newPosition", result); //saves the response body to the 'testData' variable as a map
 
         return result;
     }
@@ -266,5 +266,24 @@ public class  RestClient {
                 .extract()
                 .jsonPath()
                 .getList("");
+    }
+
+    public Map<String, Object> updateCandidate(Map<String, String> updatedCandidate, Object id) {
+        return RestAssured.given().
+                log().all()
+                .baseUri(baseUrl)
+                .basePath("candidates/" + id)
+                .header(CONTENT_TYPE, JSON)
+                .header(AUTH, loginToken)
+                .body(updatedCandidate)
+                .when()
+                .patch()
+                .then()
+                .log().all()
+                .statusCode(201)
+                .extract()
+                .jsonPath()
+                .getMap("");
+
     }
 } //end of class

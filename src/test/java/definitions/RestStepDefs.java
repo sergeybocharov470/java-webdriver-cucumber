@@ -11,8 +11,7 @@ import support.RestClient;
 import support.TestContext;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.io.File;							   
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +31,7 @@ public class RestStepDefs {
 
     @When("I create via REST {string} position")
     public void iCreateViaRESTPosition(String type) {
-        new RestClient().createPosition(/*getDataFromYmlFile(type)*/ getPosition(type));  //getPosition from TestContext
+        new RestClient().createPosition(/*getDataFromYmlFile(type)*/ getPositionFromFile(type));  //getPosition from TestContext
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -106,7 +105,7 @@ public class RestStepDefs {
 
     @When("I create via REST {string} candidate")
     public void iCreateViaRESTCandidate(String candidate) {
-        new RestClient().createCandidate(getDataFromYmlFile(candidate));
+        new RestClient().createCandidate(getCandidateFromFile(candidate));
         System.out.println("Candidate from API: " + new TestContext().getTestDataMap("newCandidate"));
     }
 
@@ -122,7 +121,7 @@ public class RestStepDefs {
 														 
         List<Map<String, Object>> actualPositions = new RestClient().getPositions();
         Object expectedPositionId = getTestDataMap("newPosition").get("id");
-        Map<String, String> expectedPosition = getPosition(type);
+        Map<String, String> expectedPosition = getPositionFromFile(type);
 												   
         boolean isFound = false;
         for (Map<String, Object> actualPosition : actualPositions) {
@@ -136,10 +135,6 @@ public class RestStepDefs {
                 break;
             }
         }
-
-
-																															
-																																						 
         assertThat(isFound).isTrue();
 																																																	  
     }
@@ -147,7 +142,7 @@ public class RestStepDefs {
 
     @When("I update via REST new {string} position")
     public void iUpdateViaRESTPosition(String type) {
-        Map<String, String> updatedPosition = getPosition(type + "_updated");
+        Map<String, String> updatedPosition = getPositionFromFile(type + "_updated");
         Object id = getTestDataMap("newPosition").get("id");
         new RestClient().updatePosition(updatedPosition, id);
     }
@@ -156,7 +151,7 @@ public class RestStepDefs {
     public void iVerifyViaRESTNewPositionIsUpdated(String type) {
         Object expectedPositionId = getTestDataMap("newPosition").get("id");
         Map<String, Object> actualPosition = new RestClient().getPosition(expectedPositionId);
-        Map<String, String> expectedFields = getPosition(type + "_updated");
+        Map<String, String> expectedFields = getPositionFromFile(type + "_updated");
 
         for (String key : expectedFields.keySet()) {
             System.out.println("Verifying " + key);
@@ -194,6 +189,9 @@ public class RestStepDefs {
 
     @When("I update via REST {string} candidate")
     public void iUpdateViaRESTCandidate(String fileType) {
+        Map<String, String> updatedCandidate = getPositionFromFile(fileType + "_updated");
+        Object id = getTestDataMap("newCandidate").get("id");
+        new RestClient().updateCandidate(updatedCandidate, id);
     }
 
     @Then("I verify via REST that {string} resume has been added")
@@ -214,30 +212,28 @@ public class RestStepDefs {
                 assertThat(signature).startsWith("D0CF11E0A1B11AE1");
                 break;
         }
-
+//verify that contents of initial file and extracted and saved one are equal
         saveFile("returnedResume", fileType, byteArray);
         File actualFile = getFile("resume", fileType);
         File expectedFile = getFile("returnedResume", fileType);
         boolean areEqual = FileUtils.contentEquals(actualFile, expectedFile);
         assertThat(areEqual).isTrue();
-
-//        System.out.println(signature);
-
-    }
+   }
 
     @Then("I verify via REST new {string} candidate is in the list")
     public void iVerifyViaRESTNewCandidateIsInTheList(String type) {
         List<Map<String, Object>> actualCandidates = new RestClient().getCandidates();
         Object expectedCandidateId = getTestDataMap("newCandidate").get("id");
-        Map<String, String> expectedCandidate = getCandidate(type);
+        Map<String, String> expectedCandidate = getCandidateFromFile(type);
 
         boolean isFound = false;
         for (Map<String, Object> actualCandidate : actualCandidates) {
-            if (actualCandidate.get("id").equals(expectedCandidateId)) {
+            if (actualCandidate.get("id").toString().equals(expectedCandidateId.toString())) {
 
                 for(String key : expectedCandidate.keySet()) {
-                    System.out.println("Verifying " + key);
+                    System.out.println("Verifying " + key + ", Actual: " + actualCandidate.get(key).toString() + "; Expected: " + expectedCandidate.get(key).toString());
                     assertThat(actualCandidate.get(key).toString()).isEqualTo(expectedCandidate.get(key).toString());
+                    //System.out.println();
                 }
                 isFound = true;
                 break;
@@ -246,4 +242,43 @@ public class RestStepDefs {
         assertThat(isFound).isTrue();
     }
 
+    @Then("I verify via REST new {string} candidate is updated")
+    public void iVerifyViaRESTNewCandidateIsUpdated(String type) {
+        Object expectedCandidateId = getTestDataMap("newCandidate").get("id");
+        Map<String, Object> actualCandidate = new RestClient().getPosition(expectedCandidateId);
+        Map<String, String> expectedCandidate = getCandidateFromFile(type + "_updated");
+
+        for (String key : expectedCandidate.keySet()) {
+            System.out.println("Verifying " + key);
+            assertThat(actualCandidate.get(key).toString()).isEqualTo(expectedCandidate.get(key).toString());
+        }
+    }
+
+    @When("I create new {string} position")  //authorisation is needed to post a new position
+    public void iCreateNewPosition(String position) {
+        new RestClient().createPosition(getPositionFromFile(position));
+        setTestData("newExpectedPosition", getPositionFromFile(position));
+        System.out.println("newExpectedPosition: " + getPositionFromFile(position));
+    }
+
+    @Then("I verify new position is created")
+    public void iVerifyNewPositionIsCreated() {
+        List<Map<String, Object>> actualPositions = new RestClient().getPositions();
+        Object expectedPositionId = getTestDataMap("newPosition").get("id");
+        Map<String, Object> expectedPosition = getTestDataMap("newExpectedPosition");
+
+        boolean isFound = false;
+        for (Map<String, Object> actualPosition : actualPositions) {
+            if (actualPosition.get("id").equals(expectedPositionId)) {
+                isFound = true;
+
+                for(String key : expectedPosition.keySet()) {
+                    System.out.println("Verifying " + key);
+                    assertThat(actualPosition.get(key)).isEqualTo(expectedPosition.get(key));
+                }
+                break;
+            }
+        }
+        assertThat(isFound).isTrue();
+    }
 } // end of the class

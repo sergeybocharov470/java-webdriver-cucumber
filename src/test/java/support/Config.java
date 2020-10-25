@@ -2,7 +2,8 @@ package support;
 
 import java.util.List;
 import java.util.Map;
-
+// set of variables existing in config.yml file You have to name filds here the same as they named in
+//your source (database, file, etc.,)
     public class Config {
         public String browser;
         public String testEnv;
