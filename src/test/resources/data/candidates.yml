@@ -7,6 +7,11 @@ sdet:
     city: Los Altos
     state: CA
     zip: "94040"
+sdet_updated:
+    address: "1247 Main St"
+    city: "Germantown"
+    state: "MD"
+    zip: "22334"
 qa:
     firstName: Richard
     lastName: Roe

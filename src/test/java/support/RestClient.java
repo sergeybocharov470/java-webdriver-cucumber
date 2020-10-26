@@ -268,6 +268,23 @@ public class  RestClient {
                 .getList("");
     }
 
+    public Map<String, Object> getCandidate(Object candidateId) {
+        return RestAssured.given()
+                .log().all()
+                .baseUri(baseUrl)
+                .basePath("candidates/" + candidateId)
+                .header(AUTH, loginToken)
+                .when()
+                .get()
+                .then()
+                .log().all()
+                .statusCode(200)
+                .extract()
+                .jsonPath()
+                .getMap("");
+
+    }
+
     public Map<String, Object> updateCandidate(Map<String, String> updatedCandidate, Object id) {
         return RestAssured.given().
                 log().all()
@@ -280,10 +297,24 @@ public class  RestClient {
                 .patch()
                 .then()
                 .log().all()
-                .statusCode(201)
+                .statusCode(200)
                 .extract()
                 .jsonPath()
                 .getMap("");
 
     }
+
+    public void deleteCandidate(Object candidateId) {
+        new RestAssured().given()
+                .log().all()
+                .baseUri(baseUrl)
+                .basePath("candidates/" + candidateId)
+                .header(AUTH, loginToken)
+                .when()
+                .delete()
+                .then()
+                .log().all()
+                .statusCode(204);
+    }
+
 } //end of class

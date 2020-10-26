@@ -1,0 +1,14 @@
+sdet:
+  address: "1247 Main St"
+  city: "Germantown"
+  state: "MD"
+  zip: "22334"
+qa:
+  firstName: Richard
+  lastName: Roe
+  email: richard.roe@example.com
+  password: welcome
+  address: 4970 El Camino Real
+  city: Los Altos
+  state: CA
+  zip: "94040"

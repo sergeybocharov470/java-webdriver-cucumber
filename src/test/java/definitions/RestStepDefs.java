@@ -189,7 +189,7 @@ public class RestStepDefs {
 
     @When("I update via REST {string} candidate")
     public void iUpdateViaRESTCandidate(String fileType) {
-        Map<String, String> updatedCandidate = getPositionFromFile(fileType + "_updated");
+        Map<String, String> updatedCandidate = getCandidateFromFile(fileType + "_updated");
         Object id = getTestDataMap("newCandidate").get("id");
         new RestClient().updateCandidate(updatedCandidate, id);
     }
@@ -231,9 +231,14 @@ public class RestStepDefs {
             if (actualCandidate.get("id").toString().equals(expectedCandidateId.toString())) {
 
                 for(String key : expectedCandidate.keySet()) {
-                    System.out.println("Verifying " + key + ", Actual: " + actualCandidate.get(key).toString() + "; Expected: " + expectedCandidate.get(key).toString());
-                    assertThat(actualCandidate.get(key).toString()).isEqualTo(expectedCandidate.get(key).toString());
-                    //System.out.println();
+                    if (key.equals("password")) {
+                        continue;
+                    }
+                    else {
+                        System.out.println("Verifying " + key + ", Actual: " + actualCandidate.get(key).toString() + "; Expected: " + expectedCandidate.get(key));
+                        assertThat(actualCandidate.get(key).toString()).isEqualTo(expectedCandidate.get(key));
+                        //System.out.println();
+                    }
                 }
                 isFound = true;
                 break;
@@ -244,9 +249,10 @@ public class RestStepDefs {
 
     @Then("I verify via REST new {string} candidate is updated")
     public void iVerifyViaRESTNewCandidateIsUpdated(String type) {
-        Object expectedCandidateId = getTestDataMap("newCandidate").get("id");
-        Map<String, Object> actualCandidate = new RestClient().getPosition(expectedCandidateId);
-        Map<String, String> expectedCandidate = getCandidateFromFile(type + "_updated");
+        Object candidateId = getTestDataMap("newCandidate").get("id");  //saved to 'testData' variable from 'createCandidate' response
+     // an error expected here
+        Map<String, Object> actualCandidate = new RestClient().getCandidate(candidateId);   //got from APP via REST request
+        Map<String, String> expectedCandidate = getCandidateFromFile(type + "_updated"); //parsed from yml file
 
         for (String key : expectedCandidate.keySet()) {
             System.out.println("Verifying " + key);
@@ -280,5 +286,27 @@ public class RestStepDefs {
             }
         }
         assertThat(isFound).isTrue();
+    }
+
+    @When("I delete via REST new candidate")
+    public void iDeleteViaRESTNewCandidate() {
+        Object newCandidateId = getTestDataMap("newCandidate").get("id");
+        new RestClient().deleteCandidate(newCandidateId);
+        System.out.println("Candidate to delete Id: " + newCandidateId);
+    }
+
+    @Then("I verify via REST new candidate is deleted")
+    public void iVerifyViaRESTNewCandidateIsDeleted() {
+        Object newCandidateId = getTestDataMap("newCandidate").get("id");
+        List<Map<String, Object>> candidates = new RestClient().getCandidates();
+        boolean isFound = false;
+        for (Map<String, Object> candidate : candidates) {
+            if (candidate.get("id").equals(newCandidateId) ) {
+                isFound = true;
+            }
+            break;
+        }
+        assertThat(isFound).isFalse();
+        System.out.println("isFound: " + isFound);
     }
 } // end of the class
